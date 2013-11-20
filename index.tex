@@ -152,39 +152,14 @@ We call `Unstructured' to a P2P system that doesn't require or define any constr
 
 \paragraph{\textbf{Structured with Distributed Hash Tables -}} % (fold)
 \label{par:Structured with Distributed Hash Tables}
-%CAN ;CHORD ;TAPESTRY; PASTRY; Kademlia
 
-
-
-
- % Peers in DHTs such as Chord, CAN, Pastry and Tapestry maintain an index for O(log (n)) peers where n is the total number of peers in the system. Inherent to the design of a DHT are the following issues [11]: (i) generation of node-ids and object-ids, called keys, using cryptographic/randomizing hash functions such as SHA- 1 [10, 66, 87]. The objects and nodes are mapped on the overlay network depending on their key value. Each node is assigned responsibility for managing a small number of objects; (ii) building up routing information (routing tables) at various nodes in the network. Each node maintains the network location information of a few other nodes in the network; and (iii) an efficient look-up query resolution scheme. Whenever a node in the overlay receives a look-up request, it must be able to resolve it within acceptable bounds such as in O(log (n)) time. This is achieved by routing the look-up request to the nodes in the network that are most likely to store the information about the desired object. Such probable nodes are identified by using the routing table entries. Though at the core various DHTs (Chord, CAN, Pastry etc.) are similar, still there exists substantial differences in the actual implementation of algorithms including the overlay network construction (network graph structure), routing table maintenance and node join/leave handling. The performance metrics for evaluating a DHT include fault-tolerance, load-balancing, efficiency of lookups and inserts and proximity awareness [73, 91]. In Table-3, we present the comparative analysis of Chord, Pastry, CAN and Tapestry based on basic performance and organisation parameters. Comprehensive details about the performance of some common DHTs under churn can be found in [70].
-% Other classes of structured systems such as Mercury do not apply randomising hash functions for organising data
-% items and nodes. 
-
-
-
-
-
-
-
-
-% paragraph Structured with Distributed Hash Tables (end)
-
-\paragraph{\textbf{Structured without Non-Distributed Hash Tables -}} % (fold)
-\label{par:Structured without Non-Distributed Hash Tables}
-%Mercury
-
-
-% The Mercury system organises nodes into a circular overlay and places data contiguously on this ring. As Mercury does not apply hash functions, data partitioning among nodes is non-uniform. Hence it requires an explicit load-balancing scheme. 
-
-
-% paragraph Structured without Non-Distributed Hash Tables (end)
-
-
-% EXPLICAR AQUI QUE PODEMOS VER O SUMMARIO EM BAIXO :)
+Structured P2P networks have an implicit way of allocating nodes for files and replicas storage, without the need of having any specie of centralized system for indexing, this is done by taking the properties of a cryptographic hash function \cite{Bakhtiari}\cite{Kargerl}\cite{Preneel1999}, such as SHA-1\cite{D.Eastlake3rdMotorola;P.JonesSystems2001}, which applies a transformation to any set of data with a uniform distribution of possibilities, creating an index with O(log(n)) peers, where the hash of the file represents the key and gives a reference to the position of the file in the network.
+DHT's such as Chord\cite{Stoica2001}, Pastry\cite{Rowstron2001} and Tapestry\cite{Zhao2001}, use a similar strategy, mapping the nodes present in the network inside an hash ring, where each node becomes responsible for a segment of the hash ring, leveraging the responsibility to forward messages across the ring to his `fingers'(nodes that it knows the whereabouts). Kademlia\cite{Maymounkov} organizes it's nodes in a balanced binary tree, using XOR as a metric to perform the searches, while CAN\cite{Handley} introduced and a several dimension indexing system, in which a new node joining the network, will split the space with another node that has the most to leverage.
+Evaluating the DHT Structured P2P networks raises identifiable issues/challenges, that result as the trade-off of not having an centralized infrastructure, responsible for railing new nodes or storing the meta-data, these are: (i) generation of unique node-ids is not easy achievable, we need always to verify that the node-id generated doesn't exist, in order to avoid collisions; (ii) the routing table is partitioned across the nodes, increasing the lookup time as it scales.
+Table \ref{table:Complexity of structured P2P systems using a DHT}, showcases a comparison of the studied DHT algorithms.
 
 \begin{table}
-  \begin{tabular}{| p{1.3cm} | p{1.9cm} | p{2cm} | p{2.5cm} | p{1.6cm} | p{1.8cm} | p{1.8cm} |}
+  \begin{tabular}{| p{1.4cm} | p{1.9cm} | p{2cm} | p{2.5cm} | p{1.6cm} | p{1.8cm} | p{1.8cm} |}
     \hline                        
     \textbf{P2P system} & \textbf{Overlay Structure} & \textbf{Lookup Protocol} & \textbf{Networking parameter} & \textbf{Routing table size} & \textbf{Ruting complexity} & \textbf{Join/leave overhead} \\
     
@@ -199,20 +174,27 @@ We call `Unstructured' to a P2P system that doesn't require or define any constr
     
     \hline
     Tapestry & Plaxton style mesh structure & Matching suffix in NodeID & n=number of nodes in the network, b=base of the identifier & O(log\textsubscript{b}(n)) & O(b log \textsubscript{b} (n)+b) & O(log(n)) \\
-    \hline  
     
+    \hline  
+    Kademlia & 2 & 3 & 4 & 5 & 6 & 7 \\
+    \hline      
   \end{tabular}
   \caption{Summary of complexity of structured P2P systems}
-  \label{tbl:Complexity of structured P2P systems}
+  \label{table:Complexity of structured P2P systems using a DHT}
 \end{table}
 
+% paragraph Structured with Distributed Hash Tables (end)
 
+\paragraph{\textbf{Structured without Non-Distributed Hash Tables -}} % (fold)
+\label{par:Structured without Non-Distributed Hash Tables}
 
+Mercury\cite{Bharambe}, a structured P2P network that uses a non DHT model, was design to enable range queries over several attributes that data can be dimensioned on, which is desired on searches over keywords in several documents of text. Mercury design offers an explicit load balancing without the use of cryptographic hash functions, organizing the data in a circular way, named `attribute hubs'.
 
-\paragraph{\textbf{Hybrid -}} % (fold)
-\label{par:Hybrid}
-%Structella , Kelips
+% paragraph Structured without Non-Distributed Hash Tables (end)
 
+% \paragraph{\textbf{Hybrid -}} % (fold)
+% \label{par:Hybrid}
+% %Structella , Kelips
 
 
 % In recent developments, new generation P2P systems have evolved to combine both unstructured and structured P2P networks. We refer to this class of systems as hybrid. Structella [27] is one such P2P system that replaces the random graph model of an unstructured overlay (Gnutella) with a structured overlay, while still adopting the search and content placement mechanism of unstructured overlays to support complex queries. Other hybrid P2P design includes Kelips [60] and its variants. Nodes in Kelips overlay periodically gossip to discover new members of the network, and during this process nodes may also learn about other nodes as a result of lookup
@@ -224,11 +206,24 @@ We call `Unstructured' to a P2P system that doesn't require or define any constr
 
 
 
-\subsubsection{3.2.4 Assurance and Trust}
-% Fault tolerance
+\subsubsection{3.2.4 Fault Tolerance, Assurance and Trust}
+
+
+\paragraph{Fault Tolerance} % (fold)
+\label{par:Fault Tolerance}
+
+% paragraph Fault Tolerance (end)
+
+
+\paragraph{Assurance and Trust} % (fold)
+\label{par:Assurance and Trust}
+
 % Threshold Cryptography
 % Reputation Management
 % Economic Models
+
+% paragraph Assurance and Trust (end)
+
 
 
 
