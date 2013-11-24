@@ -62,9 +62,8 @@ Cloud Computing, Peer-to-peer, Voluntary Computing, Cycle Sharing, Decentralized
 
 \section{Introduction}
 
-\subsection{Lorem ipsum}
+%TODO Describe how problems are in interpreted and solved with algorithms based in the laws of nature (evolutionary computing and so on)
 
-\subsubsection{Excepteur sint}
 
 
 
@@ -78,9 +77,6 @@ Cloud Computing, Peer-to-peer, Voluntary Computing, Cycle Sharing, Decentralized
 
 \section{Objectives}
 
-\subsection{Lorem ipsum}
-
-\subsubsection{Excepteur sint}
 
 
 
@@ -101,7 +97,24 @@ The purpose of this section is to show the state of the art of the research topi
 %---------{Cloud computing and Open Source Cloud Platforms}-------
 % 
 \subsection{Cloud computing and Open Source Cloud Platforms}
-%TODO  openstack, opencloud, etc.. além do EC2, Azure, etc.
+%TODO More traditional known clouds EC2, AZURE, App Engine, ETC
+%TODO openstack http://www.openstack.org/
+% Ref links 
+% http://www.openstack.org/summit/openstack-summit-hong-kong-2013/session-videos/presentation/ibm-keynote-managing-the-next-era-of-computing-with-an-open-cloud-architecture
+% http://www.openstack.org/summit/openstack-summit-hong-kong-2013/session-videos/presentation/getting-started-with-openstack
+%  
+%TODO opencloud
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -191,10 +204,11 @@ Mercury\cite{Bharambe}, a structured P2P network that uses a non DHT model, was 
 
 % paragraph Structured without Non-Distributed Hash Tables (end)
 
-% \paragraph{\textbf{Hybrid -}} % (fold)
-% \label{par:Hybrid}
+\paragraph{\textbf{Hybrid -}} % (fold)
+\label{par:Hybrid}
 %TODO Structella , Kelips
 
+NOTE: Not sure if should include this, doesn't really include anything that new
 
 % In recent developments, new generation P2P systems have evolved to combine both unstructured and structured P2P networks. We refer to this class of systems as hybrid. Structella [27] is one such P2P system that replaces the random graph model of an unstructured overlay (Gnutella) with a structured overlay, while still adopting the search and content placement mechanism of unstructured overlays to support complex queries. Other hybrid P2P design includes Kelips [60] and its variants. Nodes in Kelips overlay periodically gossip to discover new members of the network, and during this process nodes may also learn about other nodes as a result of lookup
 % 12
@@ -205,22 +219,46 @@ Mercury\cite{Bharambe}, a structured P2P network that uses a non DHT model, was 
 
 
 
-\subsubsection{3.2.4 Fault Tolerance, Assurance and Trust}
+\subsubsection{3.2.4 Fault Tolerance, Load Balancing, Assurance and Trust}
 
-Volunteer resource sharing means that we no longer have our computational infrastructure in a confined and very well monitored place, introducing new challenges that we have to address \cite{Koloniari2005} to maintain the system running with the minimum service quality, this issues can be: scalability, fault tolerance and security\cite{Wallach} of the data and that the system doesn't get compromised. This part of the document serves to describe the techniques implemented in previous non centralized systems to address this issues.
+Volunteer resource sharing means that we no longer have our computational infrastructure in a confined and well monitored place, this introducing new challenges that we have to address \cite{Koloniari2005} to maintain the system running with the minimum service quality, this issues can be: scalability, fault tolerance, persistence, availability and security\cite{Wallach} of the data and that the system doesn't get compromised. This part of the document serves to describe the techniques implemented in previous non centralized systems to address this issues.
 
-\paragraph{Fault Tolerance} % (fold)
-\label{par:Fault Tolerance}
-%TODO PAST + FUSE 
+\paragraph{Fault Tolerance, Persistence and Availability} % (fold)
+\label{par:Fault Tolerance, Persistence and Availability}
+
+are one of the key challenges in P2P community networks, due to it's churn uncertainty, making the system unable to assume the availability of Node storing a certain group of files. Previous P2P systems offer a Fault Tolerance and Persistence by creating file replicas, across several Nodes in the network, one example is PAST\cite{Druschel2001}\cite{Rowstron2001a}, a system that uses PASTRY routing algorithm, to determine which nodes are responsible to store a certain file, creating several different hashes which corresponds to different Nodes, guaranteeing an even distribution of files across all the nodes in the network. DynamoDB\cite{Decandia2007}, a database created by Amazon to provided an scalable NOSQL solution, uses a storage algorithm, inspired by the CHORD routing algorithm, in which stores file replicas in the consequent Nodes, in order to guarantee easy lookup if one of the Nodes goes down.
+The strategy presented by the Authors of PAST to provide high availability, is an intelligent Node system, that use a probabilistic model, able to verify if there is an high request for a file, deciding to keep a copy and avoiding to overload the standard Node with every request that is made.
+
+% paragraph Fault Tolerance, Persistence and Availability (end)
+
+\paragraph{Load Balancing} % (fold)
+\label{par:load_balancing}
+
+in an optimal state, can be defined as having each node sharing roughly 1/N of the total load inside the network, if a Node has a significantly hight load compared with the optimal distribution, we call it a `heavy' node. There has been some research to find a optimal way to balance the load inside a P2P network, namely:
+
+\begin{itemize}
+   \item Power of Two Choices\cite{Byers} - Uses multiple hash functions to calculate different locations for an object, opts to store it in the least loaded node, where the other Nodes store a pointer. This approach is very simple, however it adds a lot of overhead when inserting data, however there is a proposed alternative of not using the pointers, which has the trade-off of increasing the message overhead at search.
+   \item Virtual Servers\cite{Rao2003} - Presents the concept of virtualizing the Node entity to easy transfer it amongst the machines present in the P2P network. It uses two approaches, `one-to-one', where nodes contact other Nodes inside the network with the expectation of being able to trade some of the load, shifting a virtual server, or an `one-to-many/many-to-many' in which a directory of load per node is built, so that a node can make a query in order to find it's perfect match to distribute his load. Virtual Servers approach has the major issue of adding a extra amount of work to maintain the finger tables in each node.
+   \item Thermal-Dissipation-based Approach\cite{Rieche} - Inspired by the heat expansion process, this algorithm shifts nodes position inside the hash ring windows of load responsibility, in a way that the load will implicitly flow from a node to it's close peers.
+   \item Simple Address-Space and Item Balancing\cite{Karger2004} - It's an iteration over the virtual servers, by assigning several virtual nodes to each physical node, where only one of which is active at a time and this is only changed if having a different nodeId distribution in the network brings a more load balanced hash ring
+ \end{itemize} 
+
+S. Rieche, H. Niedermayer, S. Götz and  K. Wehrle from the University of Tübingen, made a study comparing this different approaches in a scenario using the CHORD routing algorithm, using a SHA-1 as the hashing function, with 4096 nodes and 100.000 to 1.000.000 documents and executing up to 25 runs per test, the results can be observed in the Figure ~\ref{fig:lbcomp}
 
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=1\textwidth]{img/lb.jpg}
+  \caption{Load balancing approaches comparison}
+  \label{fig:lbcomp}
+\end{figure}
 
 
-
-% paragraph Fault Tolerance (end)
+% paragraph load_balancing (end)
 
 \paragraph{Assurance and Trust} % (fold)
 \label{par:Assurance and Trust}
+% PAST USERS A ENCRYPTION BEFORE PUT
 %TODO Threshold Cryptography
 %TODO Reputation Management
 %TODO Economic Models
@@ -228,11 +266,10 @@ Volunteer resource sharing means that we no longer have our computational infras
 
 
 
+
+
+
 % paragraph Assurance and Trust (end)
-
-
-
-
 
 % 
 %---------{Resource sharing using the Web as platform}------------
