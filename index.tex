@@ -221,7 +221,7 @@ Evaluating the DHT Structured P2P networks raises identifiable issues/challenges
 Table \ref{table:Complexity of structured P2P systems using a DHT}, showcases a comparison of the studied DHT algorithms.
 
 \begin{table}
-  \begin{tabular}{| p{1.3cm} | p{1.6cm} | p{1.7cm} | p{1.8cm} | p{1.6cm} | p{1.8cm} | p{1.8cm} |}
+  \begin{tabular}{| p{1.3cm} | p{1.6cm} | p{1.9cm} | p{1.8cm} | p{1.6cm} | p{1.8cm} | p{1.8cm} |}
     \hline                        
     \textbf{P2P system} & \textbf{Overlay Structure} & \textbf{Lookup Protocol} & \textbf{Networking parameter} & \textbf{Routing table size} & \textbf{Routing complexity} & \textbf{Join/leave overhead} \\
     
@@ -238,7 +238,7 @@ Table \ref{table:Complexity of structured P2P systems using a DHT}, showcases a 
     Tapestry & Plaxton style mesh structure & Matching suffix in NodeID & n=number of nodes in the network, b=base of the identifier & O(log\textsubscript{b}(n)) & O(b log \textsubscript{b} (n)+b) & O(log(n)) \\
     
     \hline  
-    Kademlia & Binary tree & XOR metric & x=current nodeId, y=target nodeId, d=distance between two nodes (d(x,y)), n=number of nodes, m=number of different bits (prefix) & O(log(n)) & \textsubscript{2}(n) & not stable \\
+    Kademlia & Binary tree & XOR metric & n=number of nodes, m=number of different bits (prefix) & O(log(n)) & O(log\textsubscript{2}(n)) & not stable \\
     \hline      
   \end{tabular}
   \caption{Summary of complexity of structured P2P systems}
