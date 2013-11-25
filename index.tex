@@ -144,6 +144,15 @@ The purpose of this section is to show the state of the art of the research topi
 %TODO  * Utility Grids (provide all grids services)
 
 
+% User Centric Community Clouds 
+% João Paulo Barraca · Alfredo Matos · Rui L. Aguiar
+
+% Bla bla bla cloud is cheap, lack of control of data bla bla bla
+% "User Centric Clouds" term appears in chapter 5  
+% "A cloud system that uses user-centric technology can put the user back in the driver seatof his data,"
+% It focus on users giving to the community the same services as the cloud providers do in a "common API"
+% This is not a pure P2P thing
+
 
 
 \subsubsection{3.2.2 Cycle and Storage Sharing, using Volunteer Computing Systems}
@@ -153,7 +162,7 @@ The purpose of this section is to show the state of the art of the research topi
 
 
 \subsubsection{3.2.3 Peer-to-Peer Networks Architectures -}  
-Efficient resource discovery mechanism are fundamental for a distributed platform success, such as grid computing, cycle sharing or web application infrastructures\cite{Ranjan2006}, although the centralized model, keeping data bounded inside a data center offers the ability to have a stable and scalable way for resource discovery, this does not happen in a P2P network, where peers churn rate can vary greatly, there is no way to start new machines on demand for high periods of activity, the machines present are heterogeneous and so is their Internet connectivity, creating an unstable and unreliable environment. To overcome this challenges, several researches have been made in order to optimize how data is organized across all the nodes, improving the performance, stability and the availability of resources. The following paragraphs will describe the current state of the art P2P organizations, typically categorized in P2P literature as Unstructured or Structured\cite{Milojicic2003}, illustrated in Figure ~\ref{fig:Different types of P2P Overlay networks organizations}.
+Efficient resource discovery mechanism are fundamental for a distributed platform success, such as grid computing, cycle sharing or web application infrastructures\cite{Ranjan2006}, although in the centralized model, by keeping data bounded inside a data center, we have a stable and scalable way for resource discovery, this does not happen in a P2P network, where peers churn rate can vary greatly, there is no way to start new machines on demand for high periods of activity, the machines present are heterogeneous and so is their Internet connectivity, creating an unstable and unreliable environment. To overcome this challenges, several researches have been made in order to optimize how data is organized across all the nodes, improving the performance, stability and the availability of resources. The following paragraphs will describe the current state of the art P2P organizations, typically categorized in P2P literature as Unstructured or Structured\cite{Milojicic2003}, illustrated in Figure ~\ref{fig:Different types of P2P Overlay networks organizations}.
 
 \begin{figure}[bh!]
   \begin{center}
@@ -181,7 +190,7 @@ Evaluating the DHT Structured P2P networks raises identifiable issues/challenges
 Table \ref{table:Complexity of structured P2P systems using a DHT}, showcases a comparison of the studied DHT algorithms.
 
 \begin{table}
-  \begin{tabular}{| p{1.4cm} | p{1.9cm} | p{2cm} | p{2.5cm} | p{1.6cm} | p{1.8cm} | p{1.8cm} |}
+  \begin{tabular}{| p{1.3cm} | p{1.6cm} | p{1.7cm} | p{1.8cm} | p{1.6cm} | p{1.8cm} | p{1.8cm} |}
     \hline                        
     \textbf{P2P system} & \textbf{Overlay Structure} & \textbf{Lookup Protocol} & \textbf{Networking parameter} & \textbf{Routing table size} & \textbf{Ruting complexity} & \textbf{Join/leave overhead} \\
     
@@ -189,7 +198,7 @@ Table \ref{table:Complexity of structured P2P systems using a DHT}, showcases a 
     Chord & 1 dimension, Hash ring & Matching key and NodeID & n= number of nodes in the network & O(log(n)) & O(log(n)) & O(log(n)\textsuperscript{2}) \\
     
     \hline
-    Pastry & Plaxton style mesh structure & Matching key and prefix in NodeID & n\= number of nodes in the network, b\=base of identifier & O(log\textsubscript{b} (n)) & O(b log \textsubscript{b} (n)+b) & O(log(n)) \\
+    Pastry & Plaxton style mesh structure & Matching key and prefix in NodeID & n= number of nodes in the network, b=base of identifier & O(log\textsubscript{b} (n)) & O(b log \textsubscript{b} (n)+b) & O(log(n)) \\
     
     \hline
     CAN & d-dimensional ID Space & Key value pair map to a point P in the D-dimensional space & n= number of nodes in the network, d=number of dimensions & O(2d) & O(d n\textsuperscript{1/2}) & O(2d) \\
@@ -297,10 +306,7 @@ Trust in a P2P system, as mentioned, is fundamental to it's well behaved functio
   \label{table:reputation}
 \end{table}
 
-% TODO!!! Talk about incentives and eigen trust
-% * Incentives for Sharing in Peer-to-Peer Networks Nead to read!
-
-% * The EigenTrust Algorithm for Reputation Management in P2P Networks      (note: stores reputation locally) Need to Read
+Incentives for sharing resources\cite{Golle2001} can in the form of money rewards, greater speed access(used in Napster and some bittorrent networks) or it can be converted to a interchangeable rate to trade for more access to resources, giving the birth of economic models\cite{Filipe2011}\cite{Vishnumurthy}, that model the traded resources as a currency in which a peer has to trade in order to use the network.
 
 
 
