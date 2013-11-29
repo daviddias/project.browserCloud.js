@@ -417,6 +417,9 @@ for example:
 
 [GRAB ONE MANTA EXAMPLE TO HERE]
 
+The assets, can be one of the present in Human' Cloud or one provided by the user, respecting the service policies of not using functionalities that may cause some misbehavior of the node executing the job. 
+
+
 \subsection{Storage}
 
 Human's Cloud storage happens in what it's named, the ``Ascended node ring'', this nodes have an higher reliability, making the storage system more stable, without the need of constantly burning computer cycles to maintain the files replica level.
@@ -455,12 +458,24 @@ Human's Cloud adapts the Load Balancing virtual server's method, by using the sa
 Files are storage as objects in a indexedDB type storage, provided by the leveljs module. 
 
 \subsection{Job Scheduling}
-%TODO 
-
+% TODO 
+% TODO
+% TODO 
+% TODO
+% TODO 
+% TODO
+% TODO 
+% TODO
 
 \subsection{Node Level}
-%TODO 
-Figure~\ref{fig:hcnode}
+
+At the node level, we divide the application into two fundamental services and 3 pluggable components, with the possibility for expansion, thanks to Javascript dynamic runtime, we can find this structure in Figure~\ref{fig:hcnode}.
+
+Starting with the communication layer, where the DHT logic is implemented, where the functional calls to propagate messages through the hash ring are implemented. 
+
+Next, we have the Service Routing layer, this service is responsible to guide the message to the right component, this enables the architecture to be more modular, plugging in more components as it's needed, for example, when a node ascends and needs the storage component to fulfill his responsibility.
+
+Last, we have the components, individual modules that do one thing and one thing well [Unix philosofy]. Currently, we present the Storage module, responsible for holding the data, the Job Schedule, responsible to orchestrate jobs issued by the users, the assets needed to execute the jobs and finally the job executor, the module that will execute the jobs in a separate process using webworkers.
 
 \begin{figure}[h!]
   \centering
@@ -470,10 +485,10 @@ Figure~\ref{fig:hcnode}
 \end{figure}
 
 \subsection{Reputation Mechanism}
-%TODO 
 
+The reputation mechanism present will enable the network to identify the nodes that show more availability and have the necessary means to ascend and take a more important role. In order to evaluate each node, we define several metrics, these are: uptime, number of job completions, network throughput and  computational resources available, being the uptime, the most important, to assure stability.
 
-
+The reputation of each node is stored with its node identifier on the `ascended hash ring', each time a job is completely successfully, his score gets updated and in case it reaches the required level to ascend, the jKeeper that was updating his score will enable and deploy the remaining features(storage and job schedule module) he needed to join the ascended group. 
 
 
 % ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -490,7 +505,7 @@ Figure~\ref{fig:hcnode}
 \subsection{Lorem ipsum}
 %TODO 
 
-\subsubsection{Excepteur sint}
+\subsubsection{Yada yada yei}
 %TODO 
 
 
