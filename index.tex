@@ -267,8 +267,6 @@ NOTE: Not sure if should include this, doesn't really include anything that new
 
 % paragraph Hybrid (end)
 
-
-
 \subsubsection{3.2.4 Fault Tolerance, Load Balancing, Assurance and Trust}
 
 Volunteer resource sharing means that we no longer have our computational infrastructure in a confined and well monitored place, this introducing new challenges that we have to address \cite{Koloniari2005} to maintain the system running with the minimum service quality, this issues can be: scalability, fault tolerance, persistence, availability and security\cite{Wallach} of the data and that the system doesn't get compromised. This part of the document serves to describe the techniques implemented in previous non centralized systems to address this issues.
@@ -362,6 +360,7 @@ Incentives for sharing resources\cite{Golle2001} can in the form of money reward
 \subsubsection{3.3.1 Web Platform}
 %TODO AJAX
 %TODO Javascript
+% JAVASCRIPT HIGH DYNAMIC RUNTIME
 %TODO WebRTC
 %TODO HTTP 2.0
 %TODO Banana bread
@@ -379,23 +378,69 @@ The first research of browser-based distributed cycle sharing was performed by J
 % 
 
 \section{Architecture}
+
+In this section it is described what is expected to be implemented. First, we present an overall of the architecture of Human's Cloud(Figure \ref{fig:overallarchitecture}), followed by a description of the individual components, responsible for separate tasks such as: developer front end (API), storage system, job scheduling techniques, the architecture of the system at the node level and finally, the proposed reputation system to assign different responsibilities for each Node.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.95\textwidth]{img/overall.jpg}
+  \caption{Human's cloud overall architecture}
+  \label{fig:overallarchitecture}
+\end{figure}
+
+Human's Cloud proposed architecture has the goal of enabling the user to develop on top of computing and storage resources provided by volunteers, without having to change their current application conventions. 
+
+Nodes (volunteer computers), are divided into two DHT with the purpose of separating the nodes with storage responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network, keeping the files in Nodes have proven to be more trustworthy for staying longer in the network makes the more robust by keeping the file replica level stable, this also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Never the less, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
+
+\subsection{Client API}
+
+The client API offers the traditional and expected functions for a Cloud Computing services in a very Unix like way, which developers are familiar with, these are:
+
+\begin{itemize}
+   \item \textbf{\$ hcls}  - List files in a directory
+   \item \textbf{\$ hccd}  - Traverse in storage directories   
+   \item \textbf{\$ hcget} - Get an object stored
+   \item \textbf{\$ hcput} - Store an object
+   \item \textbf{\$ hcjob} - Initialize a job   
+\end{itemize} 
+
+In order to execute this commands, a `connect' action must be issued first in which the user will request to one of the API endpoints for one point of contact in the Ascended nodes ring, that will act as mediator for all the user communications. Human's Cloud provides several API end points as a fault tolerance mechanism, inspired by DNS, so the user has always a way to discover one node to contact.
+
+To avoid node overload, the API endpoints have enabled a load balancing system that will assign different nodes as mediators to different users, based in the amount of activity the node was subjected too, the more activity, the less probability it will be selected next.
+
+The creation of a job is described by a script, presenting the objects that will be manipulated and the several assets that will be used as steps in order to process the job, such as:
+
+``hcjob /path/to/files | step1 [| step2] | /path/to/output''
+
+for example:
+
+[GRAB ONE MANTA EXAMPLE TO HERE]
+
+\subsection{Storage}
+
+Human's Cloud
+
+
+
+\subsection{Job Scheduling}
 %TODO 
 
 
 \subsection{Node Level}
 %TODO 
+Figure~\ref{fig:hcnode}
 
-\subsection{Client API}
-%TODO 
-
-\subsection{Storage}
-%TODO 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{img/node.jpg}
+  \caption{Human's Cloud Node}
+  \label{fig:hcnode}
+\end{figure}
 
 \subsection{Reputation Mechanism}
 %TODO 
 
-\subsection{Job Scheduling}
-%TODO 
+
 
 
 
