@@ -419,17 +419,18 @@ for example:
 
 \subsection{Storage}
 
-Human's Cloud storage happens in what it's called, the ``Ascended node ring'', this nodes 
+Human's Cloud storage happens in what it's named, the ``Ascended node ring'', this nodes have an higher reliability, making the storage system more stable, without the need of constantly burning computer cycles to maintain the files replica level.
 
-% What is stored:
- % object chunks
- % object metadata (location of chunks)
- % reputation log
- % directories metadata (/home), so hcls works
+Data stored in nodes can be:
+\begin{itemize}
+  \item File metadata (name of the file, size, location of the chunks, chunks hash).
+  \item File chunks
+  \item Directories metadata - This way, hcls can be more efficient 
+  \item Job information (state, issuer, workflow)
+  \item Reputation log
+\end{itemize}
 
-% Power of 2 choices -> 1 node has pointers and is the skeeper of the file, replicated of course
-
-% how chunking is done (only the keeper, makes the chunking hashing), but data get's chunked as soon as it enters the network, to avoid transmitting files of of XYZ Gb's from Node to Node, and also, it goes out of the network unchunked 
+We classify storage nodes into two types, the `sKeeper', responsible for holding the metadata of the file and hashing each chunk to identify the `sHolder', nodes responsible to store the chunk into their system. This approach mitigates the possibility of having an high unbalanced storage distribution, diving each file in equal chunks across several nodes. As we can see in Figure~\ref{fig:chunking}, each chunk gets hashed more than one time with a different hash function, the purpose is to identify several Nodes that will be responsible to store a replica, also, in order to increase the fault tolerance of the system, we replicate the `sKeeper' responsibility in the 2 following nodes in the hashring, so if one of these fails, another is assigned.
 
 \begin{figure}[h!]
   \centering
@@ -438,6 +439,7 @@ Human's Cloud storage happens in what it's called, the ``Ascended node ring'', t
   \label{fig:chunking}
 \end{figure}
 
+In Figure~\ref{fig:skeepersholder}, we can find the `sKeeper' and `sHolder' relationship. Only the sKeeper performs the chunk hashing and stores the information in the file lookup table, this happens one single time for each chunk, reducing several computer cycles for the consequent searches.
 
 \begin{figure}[h!]
   \centering
@@ -446,9 +448,11 @@ Human's Cloud storage happens in what it's called, the ``Ascended node ring'', t
   \label{fig:skeepersholder}
 \end{figure}
 
-% Load balancing through virtual servers technique 
+Each store file is chunked as soon as it enters the network, this mitigates the risk that would be present if we were transferring files with considerable sizes all at once, starving the network and the node's heap. The only point where the file gets glue together again is when it leaves the network and sent to the user.
 
-% Leveljs!
+Human's Cloud adapts the Load Balancing virtual server's method, by using the same strategy of global load, but by transferring files between sHolders and not an entire virtual server, updating the respective sKeeper accordingly. The reasons behind
+
+Files are storage as objects in a indexedDB type storage, provided by the leveljs module. 
 
 \subsection{Job Scheduling}
 %TODO 
