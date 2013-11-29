@@ -364,6 +364,7 @@ Incentives for sharing resources\cite{Golle2001} can in the form of money reward
 %TODO WebRTC
 %TODO HTTP 2.0
 %TODO Banana bread
+% IndexedDB , Level JS
 
 \subsubsection{3.3.2 Previous attempts on cycle sharing through web platform}
 The first research of browser-based distributed cycle sharing was performed by Juan-J. Merelo, Juan Lupion and Fernando Tricas, which introduced a Distributed Computation on Ruby on Rails framework\cite{Merelo2007}. The system used a client-server architecture in which clients, using a browser would connect to a endpoint, where they would download the jobs to be executed and sent back the results. In order to increase the performance of this system, a new system\cite{Duda2013} of browser-based distributed cycle sharing was creating using Node.js as a backend for very intensive Input/Output operations\cite{Tilkov2010}, with the goal of increased efficiency, this new system uses normal webpages(blogs, news sites, social networks) to host the client code that will connect with the backend in order to retrieve and execute the jobs, while the user is using the webpage, this concept is known as parasitic computing\cite{Barabasi2001}, where the user gets to contribute with his resources without having to know exactly how, however since it's Javascript code running on the client, any user has access to what is being processed and evaluate if it presents any risk to the machine.
@@ -383,14 +384,14 @@ In this section it is described what is expected to be implemented. First, we pr
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.95\textwidth]{img/overall.jpg}
+  \includegraphics[width=0.7\textwidth]{img/overall.jpg}
   \caption{Human's cloud overall architecture}
   \label{fig:overallarchitecture}
 \end{figure}
 
 Human's Cloud proposed architecture has the goal of enabling the user to develop on top of computing and storage resources provided by volunteers, without having to change their current application conventions. 
 
-Nodes (volunteer computers), are divided into two DHT with the purpose of separating the nodes with storage responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network, keeping the files in Nodes have proven to be more trustworthy for staying longer in the network makes the more robust by keeping the file replica level stable, this also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Never the less, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
+Nodes (volunteer computers), are divided into two PASTRY DHTs with the purpose of separating the nodes with storage responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network, keeping the files in Nodes have proven to be more trustworthy for staying longer in the network makes the more robust by keeping the file replica level stable, this also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Never the less, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
 
 \subsection{Client API}
 
@@ -418,9 +419,36 @@ for example:
 
 \subsection{Storage}
 
-Human's Cloud
+Human's Cloud storage happens in what it's called, the ``Ascended node ring'', this nodes 
+
+% What is stored:
+ % object chunks
+ % object metadata (location of chunks)
+ % reputation log
+ % directories metadata (/home), so hcls works
+
+% Power of 2 choices -> 1 node has pointers and is the skeeper of the file, replicated of course
+
+% how chunking is done (only the keeper, makes the chunking hashing), but data get's chunked as soon as it enters the network, to avoid transmitting files of of XYZ Gb's from Node to Node, and also, it goes out of the network unchunked 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{img/chunking.jpg}
+  \caption{A file partitioned in several chunks, each with its corresponding hashes that correspond to nodeIds}
+  \label{fig:chunking}
+\end{figure}
 
 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{img/skeepersholder.jpg}
+  \caption{Representation of the Node responsible for the file(sKeeper) and it's individual chunk holders(sHolders)}
+  \label{fig:skeepersholder}
+\end{figure}
+
+% Load balancing through virtual servers technique 
+
+% Leveljs!
 
 \subsection{Job Scheduling}
 %TODO 
@@ -432,7 +460,7 @@ Figure~\ref{fig:hcnode}
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.5\textwidth]{img/node.jpg}
+  \includegraphics[width=0.35\textwidth]{img/node.jpg}
   \caption{Human's Cloud Node}
   \label{fig:hcnode}
 \end{figure}
