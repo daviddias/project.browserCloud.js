@@ -2,6 +2,8 @@
 % \usepackage[printonlyused]{acronym} 
 \usepackage{graphicx}
 \usepackage{fixltx2e}
+\usepackage[nolist,nohyperlinks]{acronym}
+
 % 
 % Title 
 % 
@@ -159,11 +161,7 @@ The purpose of this section is to show the state of the art of the research topi
 % Global parallelization model - One population sharded in small sets computed by several slaves
 % Island Model - The population is divided in subpopulation that can run in heterogeneous machines (this is the most common in distributed computing)
 % Master-Salve Model - One central pop that communicates and collects data from others              
-                
-% Historic note: First implementation of dstributed computing on browsers was a Master-Slave proposed by Merelo using AJAX (and Ruby, meh)
-        
-% Jenkin proposed a parasitic system that was more efficient using JSON instead of XML and using a timer based programming, limiting the CPU load (n-queens problem), however this parasitic computing was described by barabasi
-% The solution in this paper can be also consider parasitic computing
+
 
 
 
@@ -267,7 +265,7 @@ NOTE: Not sure if should include this, doesn't really include anything that new
 
 % paragraph Hybrid (end)
 
-\subsubsection{3.2.4 Fault Tolerance, Load Balancing, Assurance and Trust}
+\subsubsection{3.2.4 Fault Tolerance, Load Balancing, Assurance and Trust in P2P networks}
 
 Volunteer resource sharing means that we no longer have our computational infrastructure in a confined and well monitored place, this introducing new challenges that we have to address \cite{Koloniari2005} to maintain the system running with the minimum service quality, this issues can be: scalability, fault tolerance, persistence, availability and security\cite{Wallach} of the data and that the system doesn't get compromised. This part of the document serves to describe the techniques implemented in previous non centralized systems to address this issues.
 
@@ -337,15 +335,9 @@ Trust in a P2P system, as mentioned, is fundamental to it's well behaved functio
 
 Incentives for sharing resources\cite{Golle2001} can in the form of money rewards, greater speed access(used in Napster and some bittorrent networks) or it can be converted to a interchangeable rate to trade for more access to resources, giving the birth of economic models\cite{Filipe2011}\cite{Vishnumurthy}, that model the traded resources as a currency in which a peer has to trade in order to use the network.
 
-
-
 % Economic Models
 % * Gridlet Economics: Resource Management Models and Policies for Cycle-Sharing Systems
 % * KARMA : A Secure Economic Framework for Peer-to-Peer Resource Sharing  (note: stores reputation remotly) Nead to Read
-
-
-
-
 
 
 % paragraph Assurance and Trust (end)
@@ -353,18 +345,40 @@ Incentives for sharing resources\cite{Golle2001} can in the form of money reward
 % 
 %---------{Resource sharing using the Web as platform}------------
 % 
-\subsection{Resource sharing using the Web as platform} 
-%TODO Changed in the web Platform
+\subsection{Resource sharing using the Web platform} 
 
+One of the main focuses with the proposed work, is to take advantage more recent developments of the Web platform, such as the high dynamic runtime that Javascript offers, the P2P browser capabilities enabled by WebRTC\cite{Google} in order to share resources for distributed computing and storage sharing. 
 
 \subsubsection{3.3.1 Web Platform}
-%TODO AJAX
-%TODO Javascript
+
+Since the introduction of AJAX\cite{Google/Mozzila/Opera}, 
+
+
+% TODO AJAX
+coisas
+% TODO Javascript
+\cite{Ecma2009}
 % JAVASCRIPT HIGH DYNAMIC RUNTIME
-%TODO WebRTC
-%TODO HTTP 2.0
-%TODO Banana bread
+
+
+% TODO WebRTC 
+Leveraging WebRTC for P2P Content Distribution in Web Browsers \cite{Vogt} 
+
+
+% TODO Banana bread
+https://developer.mozilla.org/en/demos/detail/bananabread
+
+% ecmascripten
+https://github.com/kripken/emscripten/wiki
+
+
 % IndexedDB , Level JS
+http://www.w3.org/TR/IndexedDB/
+https://code.google.com/p/leveldb/
+level.js an implementation of the leveldown API on top of IndexedDB (which is in turn implemented on top of LevelDB, which brings this whole shebang full circle)
+https://npmjs.org/package/level-js
+% TODO HTTP 2.0
+
 
 \subsubsection{3.3.2 Previous attempts on cycle sharing through web platform}
 The first research of browser-based distributed cycle sharing was performed by Juan-J. Merelo, Juan Lupion and Fernando Tricas, which introduced a Distributed Computation on Ruby on Rails framework\cite{Merelo2007}. The system used a client-server architecture in which clients, using a browser would connect to a endpoint, where they would download the jobs to be executed and sent back the results. In order to increase the performance of this system, a new system\cite{Duda2013} of browser-based distributed cycle sharing was creating using Node.js as a backend for very intensive Input/Output operations\cite{Tilkov2010}, with the goal of increased efficiency, this new system uses normal webpages(blogs, news sites, social networks) to host the client code that will connect with the backend in order to retrieve and execute the jobs, while the user is using the webpage, this concept is known as parasitic computing\cite{Barabasi2001}, where the user gets to contribute with his resources without having to know exactly how, however since it's Javascript code running on the client, any user has access to what is being processed and evaluate if it presents any risk to the machine.
@@ -538,7 +552,6 @@ We end this article, making an overview and summing up all the primary aspects o
 People sharing resources is one of the oldest sociological behaviors in human history, however although some known attempts as SETI@HOME have enabled that for our computer machinery, the level of friction that has to be made in order for a user to join, has been significantly high to cause a great user adoption, in the other hand, Open Cloud stacks have been evolving, providing nowadays the most reliable and distributed systems performance, having a bigger adoption even if the resources are geographically more distant or expensive.
 The proposed work is an exercise to work towards a federated community cloud that will enable its users to share effectively their resources, giving the developers a reliable and efficient way to store and process data for their applications, with an API thats familiar to the centralized Cloud model.
 
-
 % ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % ______________________________________________________________
@@ -548,8 +561,9 @@ The proposed work is an exercise to work towards a federated community cloud tha
 % Acronym List
 % 
 
-% \acro{abc}[short version]{full version}
-% \acro{efd}[shortAAA version]{full AAAversion}
+% \acrodef{P2P}{peer-to-peer}
+% % \acro{abc}[short version]{full version}
+% % \acro{efd}[shortAAA version]{full AAAversion}
 
 
 % ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
