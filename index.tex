@@ -351,33 +351,50 @@ One of the main focuses with the proposed work, is to take advantage more recent
 
 \subsubsection{3.3.1 Web Platform}
 
-Since the introduction of AJAX\cite{Google/Mozzila/Opera}, 
+Since the introduction of AJAX\cite{Google/Mozzila/Opera} the web has evolved into a new state where it left being a place of static pages, known as Web 1.0, nowadays we can have rich web applications with degrees of interaction and levels of performance close to a native application. The programming languages that power the Web Platform, in special HTML, CSS and JavaScript\cite{Ecma2009}, have been suffering several changes, enabling `realtime' data transfers and fluid navigations through content. Javascript an interpreted language with an  high dynamic runtime has proven to be the right candidate for a modular Web Platform, enabling applications to evolve in a time continuum, by only changing the pieces of code that were updated.
 
+\textbf{Emscripten}\cite{Zakai2011}, a LLVM(Low Level Virtual Machine) to JavaScript compiler, enabled native performance on Web apps by compiling any language that can be converted to LLVM bytecode, for example C/C++, into JavaScript. This tool enabled native game speed on the browser, where two of the major examples are the project Codename: ``BananaBread''\cite{Mozilla2012} and ``Epic Citadel''\cite{Mozilla2013}, in which Mozilla used Ecmascripten to port the entire Unreal Engine 3 to JavaScript. In Figure~\ref{fig:dan}, we can see a comparison of the performance of several algorithms, running on Dalvik, Android Java runtime, asm.js, the subset of Javascript that the code in C/C++ is transformed into when compiled with Emscripten and Native, the same C/C++ but running on a native environment. The results are very interesting, specially in the first test, where asm.js outperforms Native, the explanation towards this is due to the fact that BinaryTrees use a significant amount of `malloc', which is an expensive system call, where in asm.js, the code uses typedarrays, using `machine memory', which is allocated in the beginning of the execution once and used during the entire run.
 
-% TODO AJAX
-coisas
-% TODO Javascript
-\cite{Ecma2009}
-% JAVASCRIPT HIGH DYNAMIC RUNTIME
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.82\textwidth]{img/Dalvik-vs-ASM-vs-Native-edited}
+  \caption{Dalvik vs. ASM.js vs. Native performance}
+  \label{fig:dan}
+\end{figure}
 
+\textbf{WebRTC}\cite{IanHickson2013}, a technology being developed by Google, Mozilla and Opera, with the goal of enabling Real-Time Communications in the browser via a JavaScript API. WebRTC brings to the browser the possibility of peer-to-peer interoperability. Peers perform their handshake through a `Signaling Server', the signaling server will exchange the `ICE(Interactive Connectivity Establishment) candidates' of each peer, this serve as an invite so a data-channel can be opened, a visualization of this process can be seen in Figure~\ref{fig:webrtc}. Since most of the browsers sit behind NAT, there is another server, named `Turn'(Relayw), which tell to each browser they public IP in the network. WebRTC, although being built with the goal of real-time voice and video communications, it has been shown as a viable technology do distribute content as seen in PeerCDN and SwarmCDN\cite{Vogt}.
 
-% TODO WebRTC 
-Leveraging WebRTC for P2P Content Distribution in Web Browsers \cite{Vogt} 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.95\textwidth]{img/webrtc.png}
+  \caption{Example of a WebRTC session initiation}
+  \label{fig:webrtc}
+\end{figure}
 
+% There is also Jingle
+% https://github.com/legastero/jingle.js
+% Jingle is an extension of XMPP that enables P2P and communication over RTC
 
-% TODO Banana bread
-https://developer.mozilla.org/en/demos/detail/bananabread
-
-% ecmascripten
-https://github.com/kripken/emscripten/wiki
+\textbf{level.js is an implementation of the leveldown API on top of IndexedDB, which in turn is implemented on top of the LevelDB, an open source on-disk key-value store inspired by Google BigTable 
 
 
 % IndexedDB , Level JS
+refs:
 http://www.w3.org/TR/IndexedDB/
+
 https://code.google.com/p/leveldb/
-level.js an implementation of the leveldown API on top of IndexedDB (which is in turn implemented on top of LevelDB, which brings this whole shebang full circle)
+
 https://npmjs.org/package/level-js
+
+http://docs.basho.com/riak/latest/ops/advanced/backends/leveldb/
+
+
+\textbf{HTTP 2.0} 
+refs:
+http://http2.github.io/
 % TODO HTTP 2.0
+
+
 
 
 \subsubsection{3.3.2 Previous attempts on cycle sharing through web platform}
@@ -405,7 +422,7 @@ In this section it is described what is expected to be implemented. First, we pr
 
 Human's Cloud proposed architecture has the goal of enabling the user to develop on top of computing and storage resources provided by volunteers, without having to change their current application conventions. 
 
-Nodes (volunteer computers), are divided into two PASTRY DHTs with the purpose of separating the nodes with storage responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network, keeping the files in Nodes have proven to be more trustworthy for staying longer in the network makes the more robust by keeping the file replica level stable, this also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Never the less, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
+Nodes (volunteer computers), are divided into two CHORD DHTs with the purpose of separating the nodes with storage responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network, keeping the files in Nodes have proven to be more trustworthy for staying longer in the network makes the more robust by keeping the file replica level stable, this also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Never the less, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
 
 \subsection{Client API}
 
