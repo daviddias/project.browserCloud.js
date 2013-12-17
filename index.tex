@@ -252,11 +252,12 @@ Mercury\cite{Bharambe}, a structured P2P network that uses a non DHT model, was 
 
 % paragraph Structured without Non-Distributed Hash Tables (end)
 
-\paragraph{\textbf{Hybrid -}} % (fold)
-\label{par:Hybrid}
-%TODO Structella , Kelips
+% \paragraph{\textbf{Hybrid -}} % (fold)
+% \label{par:Hybrid}
 
-NOTE: Not sure if should include this, doesn't really include anything that new
+% %TODO Structella , Kelips
+
+% NOTE: Not sure if should include this, doesn't really include anything that new
 
 % In recent developments, new generation P2P systems have evolved to combine both unstructured and structured P2P networks. We refer to this class of systems as hybrid. Structella [27] is one such P2P system that replaces the random graph model of an unstructured overlay (Gnutella) with a structured overlay, while still adopting the search and content placement mechanism of unstructured overlays to support complex queries. Other hybrid P2P design includes Kelips [60] and its variants. Nodes in Kelips overlay periodically gossip to discover new members of the network, and during this process nodes may also learn about other nodes as a result of lookup
 % 12
@@ -371,23 +372,27 @@ Since the introduction of AJAX\cite{Google/Mozzila/Opera} the web has evolved in
   \label{fig:webrtc}
 \end{figure}
 
+% 
 % There is also Jingle
 % https://github.com/legastero/jingle.js
 % Jingle is an extension of XMPP that enables P2P and communication over RTC
+% 
 
-\textbf{level.js} is an implementation for the browser of the leveldown API on top of IndexedDB\cite{Recommendation2013}, which in turn is implemented on top of the LevelDB\cite{JeffreyDean;SanjayGhemawat}, an open source on-disk key-value store inspired by Google BigTable. IndexedDB is an API for client-side storage of significant amounts of structured data and for high performance searches on this data using indexes. 
 
-% IndexedDB , Level JS
-% refs(notes to self):
-% http://www.w3.org/TR/IndexedDB/
-% https://code.google.com/p/leveldb/
-% https://npmjs.org/package/level-js
-% http://docs.basho.com/riak/latest/ops/advanced/backends/leveldb/
+\textbf{`level.js'} offers an efficient way to store larger amounts of data in the browser, its implementation works as an abstraction on top of the leveldown API on top of IndexedDB\cite{Recommendation2013}, which in turn is implemented on top of the LevelDB\cite{JeffreyDean;SanjayGhemawat}, an open source on-disk key-value store inspired by Google BigTable. IndexedDB is an API for client-side storage of significant amounts of structured data and for high performance searches on this data using indexes. Since `level.js' runs on the browser, we have an efficient way to storage data and quickly retrieve it
 
-\textbf{HTTP 2.0} 
+One of the latest improvements being built for the Web Platform is the new HTTP spec, \textbf{HTTP2.0}, this new  
+
+
 refs(notes to self):
 http://http2.github.io/
 % TODO HTTP 2.0
+
+% retrocompatible
+% speed
+% paralel connection fetchets
+% diff updates
+% prioritization and flow control
 
 
 
