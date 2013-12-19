@@ -381,20 +381,30 @@ Since the introduction of AJAX\cite{Google/Mozzila/Opera} the web has evolved in
 
 \textbf{`level.js'} offers an efficient way to store larger amounts of data in the browser, its implementation works as an abstraction on top of the leveldown API on top of IndexedDB\cite{Recommendation2013}, which in turn is implemented on top of the LevelDB\cite{JeffreyDean;SanjayGhemawat}, an open source on-disk key-value store inspired by Google BigTable. IndexedDB is an API for client-side storage of significant amounts of structured data and for high performance searches on this data using indexes. Since `level.js' runs on the browser, we have an efficient way to storage data and quickly retrieve it
 
-One of the latest improvements being built for the Web Platform is the new HTTP spec, \textbf{HTTP2.0}, this new  
+One of the latest improvements being built for the Web Platform is the new HTTP spec, \textbf{HTTP2.0}\cite{Thomson2013}, this next standard after HTTP1.1 which aims to improve performance towards a more realtime web and being retrocompatible at the same time. Several advancements in this new spec are:
 
+\begin{itemize}
+  \item Retrocompatibility - HTTP2.0 respects the common headers defined by HTTP1.1, it doesn't include any change in the semantics
+  \item Parallel requests - HTTP1.1 was limited by a max of 6 parallel requests per origin and taking into account that the mean number of assets is around one hundred when loading an webapp, it means that transfers get queued and slowed down. In order to overcome this, we could distribute the assets through several origins in order to increase the throughput, however this optimization backfired when in mobile, since there was a lot of signaling traffic in TCP layer, starving the user connection. HTTP2.0 no longer has this constraint.
+  \item Diff updates - One of the web developer favorites has been concatenating their javascript files so the response payload decreases, however, in modern webapps, major part of the times we don't want the user to download the entire webapp again, but only some lines of code referring to the latest update, with diff updates, the browser will only receive what has been changed.
+  \item Prioritization and flow control - Different webapp assets have different weights in terms of user experience, with HTTP2.0, the developer can set priorities so the assets arrive by order.  A simple flow control example can be seen on Figure~\ref{fig:http2dataflow}, where the headers of the file gain priority as soon as they are ready, and get transfered immediately. 
+  \item Binary framing - In HTTP2.0, binary framing is introduced with the goal of creating more performant http parsers and encapsulating different frames as seen on Figure~\ref{fig:binaryframing}, so they can be send in an independent way.
+  \item HTTP headers compression - HTTP2.0 introduces an optimization with headers compression\cite{Ruellan2013} that can go to a minimum of 8 bytes in identical requests, against the 800 bytes in HTTP1.1, this is possible because of the state of the connection is maintained, so if a identical requests is made, changing just one of the resources (for example path:/user/a to path:/user/b), the client only has to send that change in the request.
+\end{itemize}
 
-refs(notes to self):
-http://http2.github.io/
-% TODO HTTP 2.0
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth]{img/http2binaryframing.png}
+  \caption{HTTP2.0 Binary framing}
+  \label{fig:binaryframing}
+\end{figure}
 
-% retrocompatible
-% speed
-% paralel connection fetchets
-% diff updates
-% prioritization and flow control
-
-
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth]{img/http2dataflow.png}
+  \caption{Example of an HTTP2.0 dataflow}
+  \label{fig:http2dataflow}
+\end{figure}
 
 
 \subsubsection{3.3.2 Previous attempts on cycle sharing through web platform}
