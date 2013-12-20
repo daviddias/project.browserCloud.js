@@ -123,7 +123,7 @@ Structured P2P networks have an implicit way of allocating nodes for files and r
 
 DHT's such as Chord\cite{Stoica2001}, Pastry\cite{Rowstron2001} and Tapestry\cite{Zhao2001}, use a similar strategy, mapping the nodes present in the network inside an hash ring, where each node becomes responsible for a segment of the hash ring, leveraging the responsibility to forward messages across the ring to his `fingers'(nodes that it knows the whereabouts). Kademlia\cite{Maymounkov} organizes it's nodes in a balanced binary tree, using XOR as a metric to perform the searches, while CAN\cite{Handley} introduced and a several dimension indexing system, in which a new node joining the network, will split the space with another node that has the most to leverage.
 
-Evaluating the DHT Structured P2P networks raises identifiable issues/challenges, that result as the trade-off of not having an centralized infrastructure, responsible for railing new nodes or storing the meta-data, these are: (i) generation of unique node-ids is not easy achievable, we need always to verify that the node-id generated doesn't exist, in order to avoid collisions; (ii) the routing table is partitioned across the nodes, increasing the lookup time as it scales.
+Evaluating the DHT Structured P2P networks raises identifiable issues, that result as the trade-off of not having an centralized infrastructure, responsible for railing new nodes or storing the meta-data, these are: (i) generation of unique node-ids is not easy achievable, we need always to verify that the node-id generated doesn't exist, in order to avoid collisions; (ii) the routing table is partitioned across the nodes, increasing the lookup time as it scales.
 
 Table \ref{table:Complexity of structured P2P systems using a DHT}, showcases a comparison of the studied DHT algorithms.
 
@@ -258,7 +258,15 @@ Incentives for sharing resources\cite{Golle2001} can in the form of money reward
 % 
 \subsection{Resource sharing using the Web platform} 
 
-One of the main focuses with the proposed work, is to take advantage more recent developments of the Web platform, such as the high dynamic runtime that Javascript offers, the P2P browser capabilities enabled by WebRTC\cite{Google} in order to share resources for distributed computing and storage sharing. 
+One of the main focuses with the proposed work, is to take advantage more recent developments of the Web platform, the viability of system depends on system components such as:
+\begin{itemize}
+  \item High dynamic run time for ongoing updates of the platform and specific assets for job execution
+  \item Close to native performance for high CPU bounded jobs
+  \item Peer-to-peer interconnectivity
+  \item Scalable storage and fast indexing
+\end{itemize}
+
+We explore in this section the components present or undergoing a development process for the Web platform, such as: Javascript, Emscripten, IndexedDB, WebRTC and HTTP2.0, these enable the necessary features to such a distributed shared resource system:
 
 \subsubsection{3.3.1 Web Platform}
 

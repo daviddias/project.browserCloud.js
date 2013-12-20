@@ -6,23 +6,41 @@
 
 \section{Architecture}
 
-In this section we describe our proposed architecture for the remaining implementation work. First, we present an overall of the architecture of Human's Cloud (Figure \ref{fig:overallarchitecture}), followed by a description of the individual components, responsible for separate tasks such as: developer front end (API), storage system, job scheduling techniques, the software stack and finally, the proposed reputation system to assign different responsibilities for each Node.
+In this section we describe our proposed architecture for the remaining implementation work. The software stack is composed by several subsystems that have one specific goal, exposing a well known API, this way the subsystems become interchangeable. These subsystems include:
 
+\begin{itemize}
+  \item \textbf{Communication service} - Responsible for routing messages between nodes in the DHT.
+  \item \textbf{Service router} - Processes the messages that have as destiny the its node, the goal is to call the right service (storage, reputation mechanism, job execution, etc) accordingly. One other key aspect is the ability to attach new services during the runtime.
+  \item \textbf{Storage service} - Stores any data that requires persistence in the network, such as job logs, reputation logs and file meta data and chunks.
+  \item \textbf{Job coordination} - A subsystem responsible for coordinating jobs requested by the client, keeping state and assuring its completion/
+  \item \textbf{Job execution} - Execution of jobs, gathering all the necessary assets (image processors, sound wave manipulators, etc) to complete the job/
+  \item \textbf{Reputation Mechanism} - Validate user behavior and right to take different responsibilities in the network.
+  \item \textbf{Client API and CLI} - In order to interact with the network, we offer an API and a CLI with Unix type instructions and familiar web cloud instructions that developers are familiar.
+  \item \textbf{Rendezvous points} - The only centralized component in this architecture, its purpose is for the clients to have a way to connect to the overlay network. 
+\end{itemize}
+
+We can observe how this subsystems interconnect with each other by observing Figure~\ref{fig:softwarestack}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{img/softwarestack.jpg}
+  \caption{Human's cloud Software Stack}
+  \label{fig:softwarestack}
+\end{figure}
 
 
 \subsection{Network Architecture}
 
+Network architecture can be seen on Figure \ref{fig:overallarchitecture}). Nodes (volunteer computers), are divided into two Chord DHTs with the purpose of separating the nodes with storage responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network. Keeping the files in nodes have proven to be more trustworthy for staying longer in the network makes the system more robust by keeping the file replica level stable. This also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Nevertheless, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
+
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{img/overall.jpg}
-  \caption{Human's cloud overall architecture}
+  \includegraphics[width=0.8\textwidth]{img/overall.jpg}
+  \caption{Human's cloud network architecture}
   \label{fig:overallarchitecture}
 \end{figure}
 
-Human's Cloud proposed architecture has the goal of enabling the user to develop on top of computing and storage resources provided by volunteers, without having to change their current application conventions. 
-
-Nodes (volunteer computers), are divided into two Chord DHTs with the purpose of separating the nodes with storage responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network. Keeping the files in nodes have proven to be more trustworthy for staying longer in the network makes the system more robust by keeping the file replica level stable. This also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Nevertheless, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
-
+Since browser cannot effectively have a static IP nor have a DNS record updated on demand pointing to themselves, we designed the API endpoints as the rendezvous between browsers and clients.
 
 \subsection{Software architecture at the node level}
 
@@ -43,8 +61,6 @@ Last, we have the components, individual modules that do one thing and one thing
   \caption{Human's Cloud Node}
   \label{fig:hcnode}
 \end{figure}
-
-
 
 \subsection{Storage}
 
@@ -106,28 +122,63 @@ The reputation mechanism present will enable the network to identify the nodes t
 
 The reputation of each node is stored with its node identifier on the `ascended hash ring', each time a job is completely successfully, his score gets updated and in case it reaches the required level to ascend, the jKeeper that was updating his score will enable and deploy the remaining features(storage and job schedule module) he needed to join the ascended group. 
 
-\subsection{Client API}
+\subsection{Client API and CLI}
 
-The client API offers the traditional and expected functions for a Cloud Computing services in a very Unix like way, which developers are familiar with, these are:
+The client API goal is to be familiar to experienced developers using cloud providers today and at the same time, respect the Unix philosophy, where the job work flows are composed by a stream of assets, that do one thing and one thing well. It will support CRUD operations through a REST with JSON API, a filesystem-like interface(directories and objects), where user is identified by a username and it maps to the paths shown in Table~\ref{tbl:dirrepnet}: 
 
-\begin{itemize}
-   \item \textbf{\$ hcls}  - List files in a directory
-   \item \textbf{\$ hccd}  - Traverse in storage directories   
-   \item \textbf{\$ hcget} - Get an object stored
-   \item \textbf{\$ hcput} - Store an object
-   \item \textbf{\$ hcjob} - Initialize a job   
-\end{itemize} 
+\begin{table}
+  \begin{tabular}{ p{3cm} | p{9cm} }
+  % \hline 
+  Directory & Description \\
+  \hline 
+  /:username/jobs/ & where new jobs can be inserted by the user \\
+  \hline
+  /:username/jobs-reports/ & Job status. The user is only able to read and delete the records, they are created by the system. \\
+  \hline 
+  /:username/home/ &  Private user store, only place where the user has write access \\
+  \hline   
+  /:username/reports/ & Usage and Access log reports. \\ 
+  \hline   
+  /nodes/ & Registry of all the nodes in the network with their metadata, the user can only read this folder. \\
+  % \hline   
+  \end{tabular}
+  \caption{Directories representation inside the network}
+  \label{tbl:dirrepnet}
+\end{table}
 
-In order to execute this commands, a `connect' action must be issued first in which the user will request to one of the API endpoints for one point of contact in the Ascended nodes ring, that will act as mediator for all the user communications. Human's Cloud provides several API end points as a fault tolerance mechanism, inspired by DNS, so the user has always a way to discover one node to contact.
+We provide a REST API for the developer to use the reason behind this design decision is to create a familiar interface to the majority of webdevelopers. The server replying to this requests defined in Table~\ref{tbl:restapi}, can be a public our private proxy, in the user machine, behind a company firewall or as a public service available to the community, so it remains portable and doesn't lock the user to a provider.
 
-To avoid node overload, the API endpoints have enabled a load balancing system that will assign different nodes as mediators to different users, based in the amount of activity the node was subjected too, the more activity, the less probability it will be selected next.
+\begin{table}
+  \begin{tabular}{ l | c | p{6cm} }
+    \multicolumn{3}{ l }{\textbf{Directories}} \\
+    Action: PutDirectory & \multicolumn{2}{l}{PUT /:username/home/[:directory]/:directory} \\
+    Action: ListDirectory & \multicolumn{2}{l}{GET /:username/home/[:directory]/:directory} \\
+    Action: DeleteDirectory & \multicolumn{2}{l}{DELETE /:username/home/[:directory]/:directory} \\
+    \hline 
+    \multicolumn{3}{ l }{\textbf{Files}} \\
+    Action: PutFile & \multicolumn{2}{l}{PUT /:username/home/[:directory]/:filename} \\
+    Action: GetFile & \multicolumn{2}{l}{GET /:username/home/[:directory]/:filename} \\
+    Action: DeleteFile & \multicolumn{2}{l}{DELETE /:username/home/[:directory]/:filename} \\
+    \multicolumn{3}{p{12cm}}{\textbf{note:} PutFile and GetFile, the body of the request and response  respectively is the file} \\
+    \hline 
+    \multicolumn{3}{ l }{\textbf{Jobs}} \\
+    Action: CreateJob & \multicolumn{2}{l}{PUT /:username/jobs} \\
+    Action: CancelJob & \multicolumn{2}{l}{DELETE /:username/jobs/:jobId} \\
+    Action: ListJobs & \multicolumn{2}{l}{GET /:username/jobs} \\
+    Action: GetJob & \multicolumn{2}{l}{GET /:username/home/jobs/:jobId} \\
+    Action: GetJobOutput & \multicolumn{2}{l}{GET /:username/jobs-reports/:jobId} \\
+    \multicolumn{3}{p{12cm}}{\textbf{note:} Create Job, several arguments are passed, most importantly, an array named ``phases'' that includes the orders with assets necessary in order to execute the job(e.g. `grep -ci' or if its a new asset, it should be a JS object with a closure.)} \\
+    \hline 
+  \end{tabular}
+  \caption{REST API - 1st draft, might change with implementation}
+  \label{tbl:restapi}
+\end{table}
 
-The creation of a job is described by a script, presenting the objects that will be manipulated and the several assets that will be used as steps in order to process the job, such as:
-
-``hcjob create /path/to/files | step1 [| step2] | /path/to/output''
-
-for example, if we are looking for video transcoding:
-
-``hcjob create /path/to/file | ffmpeg | out.webm''
+We are also including a CLI tool to enable quickly bash scripts for computation jobs and file storage, this CLI uses in the background the API defined in Table~\ref{tbl:restapi}. For example, if we are looking for video transcoding: ``hcjob create /path/to/file | ffmpeg | /path/to/out.webm''. The rest of the commands are:
   
-The assets, can be one of the present in Human' Cloud or one provided by the user, respecting the service policies of not using functionalities that may cause some misbehavior of the node executing the job. 
+\begin{itemize}
+  \item \textbf{\$ hcls}  - List files in a directory
+  \item \textbf{\$ hcget} - Get an object stored
+  \item \textbf{\$ hcput} - Store an object
+  \item \textbf{\$ hcjob} - Initialize a job   
+\end{itemize} 
