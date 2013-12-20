@@ -115,10 +115,27 @@ All the coordination happens in the ascended Node ring, however, in order to tak
 % note como processar ficheiros que dependem de todos os chunks, not :)
 
 
+% GET Inspired 
+
+% search_in_index (gridlet) { best_node = local_search (gridlet.specifications); node_utility = best_node.utility;
+% best_neighbour = neighbour_search (gridlet.specifications); neighbor_ utility = best_neighbor. utility;
+% if(node_ utility < 0 && neighbor_ utility < 0) return fail;
+% }
+% if(node_ utility >= neighbor_ utility) best_node.execute (gridlet);
+% else best_neighbor.search_in_index (gridlet); Figure
+
 
 \subsection{Reputation Mechanism}
 
-The reputation mechanism present will enable the network to identify the nodes that show more availability and have the necessary means to ascend and take a more important role. In order to evaluate each node, we define several metrics, these are: uptime, number of job completions, network throughput and  computational resources available, being the uptime, the most important, to assure stability.
+The reputation mechanism present will enable the network to identify the nodes that show more availability and have the necessary means to ascend and take a more important role. In order to evaluate each node, we define several metrics, these are: uptime, number of job completions, network throughput and computational resources(CPU) available, being the uptime, the most important, to assure stability. The reputation metric is calculated as follows:
+
+\begin{itemize}
+  \item $reputation = \alpha * log(uptime) + \beta * log(job completions) + \gamma * log(network throughput) + \delta * log (CPU)$ 
+  \item $\alpha+ \beta+ \gamma+ \delta = 1$
+  \item $\alpha > \beta + \gamma + \delta$
+\end{itemize}
+
+We chose to normalize the metrics and give more importance to the uptime of the system, because this is the one enabling a more stable network for storage.
 
 The reputation of each node is stored with its node identifier on the `ascended hash ring', each time a job is completely successfully, his score gets updated and in case it reaches the required level to ascend, the jKeeper that was updating his score will enable and deploy the remaining features(storage and job schedule module) he needed to join the ascended group. 
 
