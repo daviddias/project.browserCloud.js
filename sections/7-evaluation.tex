@@ -8,7 +8,7 @@
 
 The proposed system will be evaluated having into consideration the several dimensions that will define its ability to provide a reliable storage, following the CAP theorem(Consistency , Availability and Partition Tolerant), adding also as criteria, its latency and speed while performing distributed jobs over the stored data.
 
-\subsection{Evaluation of the data consistency, availability and partition tolerant}
+\subsection{Evaluation of the data consistency, availability and partition tolerance}
 
 Data consistency will be implicitly granted by having an put/delete system only, since an update to a file means rewriting the file again, a new ID will be created and by doing so, a new sKeeper is elected, avoiding a distributed lock or conflict over the same id of file. Never the less, availability and partition tolerance must be evaluated, having in consideration the hostility of environment, we want to prove that Nodes considered trustworthy(ascended), are in fact enough to guaranteed the necessary availability for any given file at any given time and that the replica number can keep stable without generating too much message overhead. To prove this, resilience will be put into test by varying the churn rate with several usage scenarios, for example, a surge.
 
