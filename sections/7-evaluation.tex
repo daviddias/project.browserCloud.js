@@ -1,0 +1,21 @@
+%!TEX root = ../index.tex
+
+% 
+% Evaluation
+% 
+
+\section{Evaluation}
+
+The proposed system will be evaluated having into consideration the several dimensions that will define its ability to provide a reliable storage, following the CAP theorem(Consistency , Availability and Partition Tolerant), adding also as criteria, its latency and speed while performing distributed jobs over the stored data.
+
+\subsection{Evaluation of the data consistency, availability and partition tolerant}
+
+Data consistency will be implicitly granted by having an put/delete system only, since an update to a file means rewriting the file again, a new ID will be created and by doing so, a new sKeeper is elected, avoiding a distributed lock or conflict over the same id of file. Never the less, availability and partition tolerance must be evaluated, having in consideration the hostility of environment, we want to prove that Nodes considered trustworthy(ascended), are in fact enough to guaranteed the necessary availability for any given file at any given time and that the replica number can keep stable without generating too much message overhead. To prove this, resilience will be put into test by varying the churn rate with several usage scenarios, for example, a surge.
+
+This tests will be executed in two different stages, the first one, ``in lab'', will be a controlled P2P environment, where different browsers and computers will be used for tests, in order to evaluate and calculate the factors that are used to calculate values such as: reputation, threshold to ascend one Node and block size. 
+
+After realizing how the system can perform best, a ``field'' trial will be executed, this will be executed by approaching volunteers that might want to contribute to the experiment, loading the code into their browser so real world tests can be performed.
+
+\subsection{Evaluation of latency when storing, fetching and jobs execution}
+
+To prove that the system is app development ready, we need to optimize and verify how much performant it behaves, this will enable for it's users to know before hand how it stacks to current cloud systems using a more traditional approach. To evaluate and identify how the system behaves, several tests will be executed during the ``in lab'' and ``field'' experiments, varying the load, the complexity of the job, the churn rate and the number of nodes.

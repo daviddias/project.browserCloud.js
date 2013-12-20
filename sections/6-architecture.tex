@@ -1,0 +1,125 @@
+%!TEX root = ../index.tex
+
+% 
+% Architecture
+% 
+
+\section{Architecture}
+
+In this section it is described what is expected to be implemented. First, we present an overall of the architecture of Human's Cloud(Figure \ref{fig:overallarchitecture}), followed by a description of the individual components, responsible for separate tasks such as: developer front end (API), storage system, job scheduling techniques, the architecture of the system at the node level and finally, the proposed reputation system to assign different responsibilities for each Node.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{img/overall.jpg}
+  \caption{Human's cloud overall architecture}
+  \label{fig:overallarchitecture}
+\end{figure}
+
+Human's Cloud proposed architecture has the goal of enabling the user to develop on top of computing and storage resources provided by volunteers, without having to change their current application conventions. 
+
+Nodes (volunteer computers), are divided into two CHORD DHTs with the purpose of separating the nodes with storage responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network, keeping the files in Nodes have proven to be more trustworthy for staying longer in the network makes the more robust by keeping the file replica level stable, this also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Never the less, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
+
+\subsection{Client API}
+
+The client API offers the traditional and expected functions for a Cloud Computing services in a very Unix like way, which developers are familiar with, these are:
+
+\begin{itemize}
+   \item \textbf{\$ hcls}  - List files in a directory
+   \item \textbf{\$ hccd}  - Traverse in storage directories   
+   \item \textbf{\$ hcget} - Get an object stored
+   \item \textbf{\$ hcput} - Store an object
+   \item \textbf{\$ hcjob} - Initialize a job   
+\end{itemize} 
+
+In order to execute this commands, a `connect' action must be issued first in which the user will request to one of the API endpoints for one point of contact in the Ascended nodes ring, that will act as mediator for all the user communications. Human's Cloud provides several API end points as a fault tolerance mechanism, inspired by DNS, so the user has always a way to discover one node to contact.
+
+To avoid node overload, the API endpoints have enabled a load balancing system that will assign different nodes as mediators to different users, based in the amount of activity the node was subjected too, the more activity, the less probability it will be selected next.
+
+The creation of a job is described by a script, presenting the objects that will be manipulated and the several assets that will be used as steps in order to process the job, such as:
+
+``hcjob create /path/to/files | step1 [| step2] | /path/to/output''
+
+for example, if we are looking for video transcoding:
+
+``hcjob create /path/to/file | ffmpeg | out.webm''
+  
+The assets, can be one of the present in Human' Cloud or one provided by the user, respecting the service policies of not using functionalities that may cause some misbehavior of the node executing the job. 
+
+
+\subsection{Storage}
+
+Human's Cloud storage happens in what it's named, the ``Ascended node ring'', this nodes have an higher reliability, making the storage system more stable, without the need of constantly burning computer cycles to maintain the files replica level.
+
+Data stored in nodes can be:
+\begin{itemize}
+  \item File metadata (name of the file, size, location of the chunks, chunks hash).
+  \item File chunks
+  \item Directories metadata - This way, hcls can be more efficient 
+  \item Job information (state, issuer, workflow)
+  \item Reputation log
+\end{itemize}
+
+We classify storage nodes into two types, the `sKeeper', responsible for holding the metadata of the file and hashing each chunk to identify the `sHolder', nodes responsible to store the chunk into their system. This approach mitigates the possibility of having an high unbalanced storage distribution, diving each file in equal chunks across several nodes. As we can see in Figure~\ref{fig:chunking}, each chunk gets hashed more than one time with a different hash function, the purpose is to identify several Nodes that will be responsible to store a replica, also, in order to increase the fault tolerance of the system, we replicate the `sKeeper' responsibility in the 2 following nodes in the hashring, so if one of these fails, another is assigned.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{img/chunking.jpg}
+  \caption{A file partitioned in several chunks, each with its corresponding hashes that correspond to nodeIds}
+  \label{fig:chunking}
+\end{figure}
+
+In Figure~\ref{fig:skeepersholder}, we can find the `sKeeper' and `sHolder' relationship. Only the sKeeper performs the chunk hashing and stores the information in the file lookup table, this happens one single time for each chunk, reducing several computer cycles for the consequent searches.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{img/skeepersholder.jpg}
+  \caption{Representation of the Node responsible for the file(sKeeper) and it's individual chunk holders(sHolders)}
+  \label{fig:skeepersholder}
+\end{figure}
+
+Each store file is chunked as soon as it enters the network, this mitigates the risk that would be present if we were transferring files with considerable sizes all at once, starving the network and the node's heap. The only point where the file gets glue together again is when it leaves the network and sent to the user.
+
+Human's Cloud adapts the Load Balancing virtual server's method, by using the same strategy of global load, but by transferring files between sHolders and not an entire virtual server, updating the respective sKeeper accordingly. The reasons behind
+
+Files are storage as objects in a indexedDB type storage, provided by the leveljs module. 
+
+\subsection{Job Scheduling}
+
+One of the challenges that Human's cloud propose to solve is the job coordination in a completely distributed environment, in a sustainable scalable way. Traditionally in the client-server model, we have the possibility to select one of the nodes to be the job coordinator, to implement this in a P2P network, we take advantage of the DHT, to select randomly one of the ascended nodes to be the `jKeeper', the node responsible for coordinating the job in an environment a P2P network.
+
+The `jKeeper', is responsible for contacting the `sKeepers' of each individual file, and coordinate them to command each of `sHolder' to perform the desired computation on the file.
+
+All the steps during the computation are journaled in the Job log, store with the coordinator, and replicated in the 2 following nodes for Fault Tolerance measure.
+
+All the coordination happens in the ascended Node ring, however, in order to take advantage of the normal node ring resources, `sHolders' are allowed to offload the computation to process this job in the `normal hash ring', this is done by sending a probe, asking for `volunteers' for a job, when the threshold required is met, the orchestration starts, where the `sHolder' transfers the data and the assets necessary for processing it.
+
+
+% TODO Fazer aqui um boneco
+
+% note como processar ficheiros que dependem de todos os chunks, not :)
+
+\subsection{Node Level}
+
+At the node level, we divide the application into two fundamental services and 3 pluggable components, with the possibility for expansion, thanks to Javascript dynamic runtime, we can find this structure in Figure~\ref{fig:hcnode}.
+
+Starting with the communication layer, where the DHT logic is implemented, where the functional calls to propagate messages through the hash ring are implemented. 
+
+Next, we have the Service Routing layer, this service is responsible to guide the message to the right component, this enables the architecture to be more modular, plugging in more components as it's needed, for example, when a node ascends and needs the storage component to fulfill his responsibility.
+
+Last, we have the components, individual modules that do one thing and one thing well. Currently, we present the Storage module, responsible for holding the data, the Job Schedule, responsible to orchestrate jobs issued by the users, the assets needed to execute the jobs and finally the job executor, the module that will execute the jobs in a separate process using webworkers.
+
+% Doug McIlroy, then head of the Bell Labs CSRC and contributor to Unix pipes,[1] summarised Unix philosophy as follows:[2]
+% This is the Unix philosophy: Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.35\textwidth]{img/node.jpg}
+  \caption{Human's Cloud Node}
+  \label{fig:hcnode}
+\end{figure}
+
+\subsection{Reputation Mechanism}
+
+The reputation mechanism present will enable the network to identify the nodes that show more availability and have the necessary means to ascend and take a more important role. In order to evaluate each node, we define several metrics, these are: uptime, number of job completions, network throughput and  computational resources available, being the uptime, the most important, to assure stability.
+
+The reputation of each node is stored with its node identifier on the `ascended hash ring', each time a job is completely successfully, his score gets updated and in case it reaches the required level to ascend, the jKeeper that was updating his score will enable and deploy the remaining features(storage and job schedule module) he needed to join the ascended group. 
