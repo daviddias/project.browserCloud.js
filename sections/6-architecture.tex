@@ -101,7 +101,7 @@ Files are storage as objects in a indexedDB type storage, provided by the levelj
 
 \subsection{Distributed Job Scheduling}
 
-One of the challenges that Human's cloud propose to solve is the job coordination in a completely distributed environment, in a sustainable scalable way. Traditionally in the client-server model, we have the possibility to select one of the nodes to be the job coordinator, to implement this in a P2P network, we take advantage of the DHT, to select randomly one of the ascended nodes to be the `jKeeper', the node responsible for coordinating the job in an environment a P2P network.
+Job coordination is one of the main challenges in a completely distributed environment, in a sustainable scalable way. Traditionally in the client-server model, we have the possibility to select one of the nodes to be the job coordinator, to implement this in a P2P network, we take advantage of the DHT, to select randomly one of the ascended nodes to be the `jKeeper', the node responsible for coordinating the job in an environment a P2P network.
 
 The `jKeeper', is responsible for contacting the `sKeepers' of each individual file, and coordinate them to command each of `sHolder' to perform the desired computation on the file.
 
@@ -110,6 +110,10 @@ All the steps during the computation are journaled in the Job log, store with th
 All the coordination happens in the ascended Node ring, however, in order to take advantage of the normal node ring resources, `sHolders' are allowed to offload the computation to process this job in the `normal hash ring', this is done by sending a probe, asking for `volunteers' for a job, when the threshold required is met, the orchestration starts, where the `sHolder' transfers the data and the assets necessary for processing it.
 
 
+--------
+NOTA:
+Estou a actualizar o distributed job scheduling para ter o algoritmo
+----
 % TODO Fazer aqui um boneco
 
 % note como processar ficheiros que dependem de todos os chunks, not :)
