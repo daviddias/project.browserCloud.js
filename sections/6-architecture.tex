@@ -109,24 +109,52 @@ All the steps during the computation are journaled in the Job log, store with th
 
 All the coordination happens in the ascended Node ring, however, in order to take advantage of the normal node ring resources, `sHolders' are allowed to offload the computation to process this job in the `normal hash ring', this is done by sending a probe, asking for `volunteers' for a job, when the threshold required is met, the orchestration starts, where the `sHolder' transfers the data and the assets necessary for processing it.
 
-
---------
-NOTA:
-Estou a actualizar o distributed job scheduling para ter o algoritmo
-----
-% TODO Fazer aqui um boneco
-
-% note como processar ficheiros que dependem de todos os chunks, not :)
+An example in pseudo-code can be analyzed below:
 
 
-% GET Inspired 
+\textit{Client pseudo-code}
+\begin{verbatim}
+var jobId = randomUniqueIdGenerator();
+sendJob(jobId, job); // job object includes the files names being manipulated+assets
+\end{verbatim}
 
-% search_in_index (gridlet) { best_node = local_search (gridlet.specifications); node_utility = best_node.utility;
-% best_neighbour = neighbour_search (gridlet.specifications); neighbor_ utility = best_neighbor. utility;
-% if(node_ utility < 0 && neighbor_ utility < 0) return fail;
-% }
-% if(node_ utility >= neighbor_ utility) best_node.execute (gridlet);
-% else best_neighbor.search_in_index (gridlet); Figure
+
+\textit{jKeeper pseudo-code}
+\begin{verbatim}
+replicateJob(); // each job replica holder will ping the jKeeper to make sure progress 
+// is made, if the node fails, other will assume its role
+job.sKeepersList.forEach(function (sKeeper){
+  commandJobExecution(job, sKeeper, statusReport);
+  function statusReport(status){
+    log(status);
+  }  
+}); //Job is complete
+\end{verbatim}
+
+\textit{sKeeper pseudo-code}
+\begin{verbatim}
+var sHolders = this.getsHolders(job.filename);
+sHolders.forEach(function(sHolder){
+  commandTaskExecution(sHolder, taskReport);
+  function taskReport(status){
+    reportBack(status); // report to jKeeper
+  }
+});
+\end{verbatim}
+
+\textit{sHolder pseudo-code}
+\begin{verbatim}
+if(smallTask && available) {
+  doIt(task, taskReport);
+} else {
+  requestNormalNodesToExecute(task, taskReport)
+}
+function taskReport(status){
+  reportBack(status); // report to sKeeper
+}
+\end{verbatim}
+
+
 
 
 \subsection{Reputation Mechanism}
