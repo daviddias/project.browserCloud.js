@@ -4,7 +4,7 @@
 % Architecture
 % 
 
-\section{Architecture}
+\section{Analysis and discussion of the architecture}
 
 In this section we describe our proposed architecture for the remaining implementation work. The software stack is composed by several subsystems that have one specific goal, exposing a well known API, this way the subsystems become interchangeable. These subsystems include:
 
@@ -40,17 +40,17 @@ Network architecture can be seen on Figure \ref{fig:overallarchitecture}). Nodes
   \label{fig:overallarchitecture}
 \end{figure}
 
-Since browser cannot effectively have a static IP nor have a DNS record updated on demand pointing to themselves, we designed the API endpoints as the rendezvous between browsers and clients.
+Since browsers cannot effectively have a static IP nor have a DNS record updated on demand pointing to themselves, we designed the API endpoints as the rendezvous between browsers and clients.
 
 \subsection{Software architecture at the node level}
 
-At the node level, we divide the application into two fundamental services and 3 pluggable components, with the possibility for expansion, thanks to Javascript dynamic runtime, we can find this structure in Figure~\ref{fig:hcnode}.
+At the node level, we divide the application into two fundamental services and three pluggable components, with the possibility for expansion, thanks to Javascript dynamic runtime, we can find this structure in Figure~\ref{fig:hcnode}.
 
-Starting with the communication layer, where the DHT logic is implemented, where the functional calls to propagate messages through the hash ring are implemented. 
+In the communication layer, we find the DHT logic implemented to effectively propagate messages. One of the main goals with component is to be modular, so we can switch between different DHT algorithm if necessary, without affecting the rest of the application functionality.
 
-Next, we have the Service Routing layer, this service is responsible to guide the message to the right component, this enables the architecture to be more modular, plugging in more components as it's needed, for example, when a node ascends and needs the storage component to fulfill his responsibility.
+Next, we have the Service Routing layer, this service is responsible to guide the message to the right component, enabling the architecture to be more modular, plugging in more components as it is needed. For example, when a node ascends and needs the storage component to fulfill his responsibility.
 
-Last, we have the components, individual modules that do one thing and one thing well. Currently, we present the Storage module, responsible for holding the data, the Job Schedule, responsible to orchestrate jobs issued by the users, the assets needed to execute the jobs and finally the job executor, the module that will execute the jobs in a separate process using webworkers.
+Last, we have the components, individual modules that do one thing and one thing well. Currently, we present the Storage module, responsible for holding the data; the Job Scheduler, responsible to orchestrate jobs issued by the users; the assets needed to execute the jobs and finally; the job executor, the module that will execute the jobs in a separate process using webworkers.
 
 % Doug McIlroy, then head of the Bell Labs CSRC and contributor to Unix pipes,[1] summarised Unix philosophy as follows:[2]
 % This is the Unix philosophy: Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface.
@@ -64,18 +64,18 @@ Last, we have the components, individual modules that do one thing and one thing
 
 \subsection{Storage}
 
-browserCloud.js storage happens in what it's named, the ``Ascended node ring'', these nodes have an higher reliability, making the storage system more stable, without the need of constantly burning computer cycles to maintain the files replica level.
+browserCloud.js storage happens in what it is named, the ``Ascended node ring'', these nodes have an higher reliability, making the storage system more stable, without the need of constantly burning computer cycles to maintain the files replica level.
 
 Data stored in nodes can be:
 \begin{itemize}
-  \item File metadata (name of the file, size, location of the chunks, chunks hash).
-  \item File chunks
-  \item Directories metadata - This way, hcls can be more efficient 
-  \item Job information (state, issuer, workflow)
-  \item Reputation log
+  \item File metadata (name of the file, size, location of the chunks, chunks hash);
+  \item File chunks;
+  \item Directories metadata - This way, bcls can be more efficient ;
+  \item Job information (state, issuer, workflow);
+  \item Reputation log;
 \end{itemize}
 
-We classify storage nodes into two types: 1) the `sKeeper', responsible for holding the metadata of the file and hashing each chunk to identify the `sHolder'; 2) `sHolder' nodes responsible to store the chunk into their system. This approach mitigates the possibility of having an highly unbalanced storage distribution, dividing each file in equal chunks across several nodes. As we can see in Figure~\ref{fig:chunking}, each chunk gets hashed more than one time with a different hash function, the purpose is to identify several Nodes that will be responsible to store a replica of the chunk. Also, in order to increase the fault tolerance of the system, we replicate the `sKeeper' responsibility in the 2 following nodes in the hashring, so if one of these fails, another is assigned.
+We classify storage nodes into two types: 1) the `sKeeper', responsible for holding the metadata of the file and hashing each chunk to identify the `sHolder'; 2) `sHolder' nodes responsible to store the chunk into their system. This approach mitigates the possibility of having an highly unbalanced storage distribution, dividing each file in equal chunks across several nodes. As we can see in Figure~\ref{fig:chunking}, each chunk gets hashed more than one time with a different hash function, its purpose being to identify several Nodes that will be responsible to store a replica of the chunk. Also, in order to increase the fault tolerance of the system, we replicate the `sKeeper' responsibility in the two following nodes in the hashring, so if one of these fails, another is assigned.
 
 \begin{figure}[h!]
   \centering
@@ -84,7 +84,7 @@ We classify storage nodes into two types: 1) the `sKeeper', responsible for hold
   \label{fig:chunking}
 \end{figure}
 
-In Figure~\ref{fig:skeepersholder}, we can find the `sKeeper' and `sHolder' relationship. Only the sKeeper performs the chunk hashing and stores the information in the file lookup table, this happens one single time for each chunk, reducing several network hops per message on the consequent searches.
+In Figure~\ref{fig:skeepersholder}, we can find the `sKeeper' and `sHolder' relationship. Only the sKeeper performs the chunk hashing and stores the information in the file lookup table. This happens one single time for each chunk, reducing several network hops per message on the consequent searches.
 
 \begin{figure}[h!]
   \centering
@@ -93,33 +93,34 @@ In Figure~\ref{fig:skeepersholder}, we can find the `sKeeper' and `sHolder' rela
   \label{fig:skeepersholder}
 \end{figure}
 
-Each store file is chunked as soon as it enters the network, this mitigates the risk that would be present if we were transferring files with considerable sizes all at once, starving the network and the node's heap. The only point where the file gets glued together again is when it leaves the network and sent to the user and even this could be made to perform chunk transfer in parallel to the client directly.
+Each store file is chunked as soon as it enters the network, thus mitigating the risk that would be present if we were transferring files with considerable sizes all at once, starving the network and the node's heap. The only point where the file gets assembled together again is when it leaves the network and sent to the user, and even this could be made to perform chunk transfer in parallel to the client directly.
 
-browserCloud.js adapts the Load Balancing virtual server's method, by using the same strategy of global load, but by transferring files between sHolders and not an entire virtual server, updating the respective sKeeper accordingly. 
-
-Files are storage as objects in a indexedDB type storage, provided by the leveljs module. 
+browserCloud.js adapts the Load Balancing virtual server's method, by using the same strategy of global load, but by transferring files between sHolders and not an entire virtual server, updating the respective sKeeper accordingly. Files are storage as objects in a indexedDB type storage, provided by the leveljs module. 
 
 \subsection{Distributed Job Scheduling}
 
-Job coordination is one of the main challenges in a completely distributed environment, in a sustainable scalable way. Traditionally in the client-server model, we have the possibility to select one of the nodes to be the job coordinator, to implement this in a P2P network, we take advantage of the DHT, to select randomly one of the ascended nodes to be the `jKeeper', the node responsible for coordinating the job in an environment a P2P network.
+Job coordination is one of the main challenges in a completely distributed environment, in a sustainable and scalable way. Traditionally in the client-server model, we have the possibility to select one of the nodes to be the job coordinator. To implement this in a P2P network, we take advantage of the DHT, to select randomly one of the ascended nodes to be the `jKeeper', the node responsible for coordinating the job in an environment a P2P network.
 
-The `jKeeper', is responsible for contacting the `sKeepers' of each individual file, and coordinate them to command each of `sHolder' to perform the desired computation on the file.
+The `jKeeper' is responsible for contacting the `sKeepers' of each individual file, and coordinate them to command each of `sHolder' to perform the desired computation on the file. All the steps during the computation are journaled in the Job log, stored with the coordinator, and replicated in the two following nodes for Fault Tolerance measure.
 
-All the steps during the computation are journaled in the Job log, store with the coordinator, and replicated in the 2 following nodes for Fault Tolerance measure.
+All the coordination takes place in the ascended Node ring, however, in order to take advantage of the normal node ring resources. `sHolders' are allowed to offload the computation to process this job in the `normal hash ring'. This is done by sending a probe, asking for `volunteers' for a job, when the threshold required is met, the orchestration starts, where the `sHolder' transfers the data and the assets necessary for processing it.
 
-All the coordination happens in the ascended Node ring, however, in order to take advantage of the normal node ring resources, `sHolders' are allowed to offload the computation to process this job in the `normal hash ring', this is done by sending a probe, asking for `volunteers' for a job, when the threshold required is met, the orchestration starts, where the `sHolder' transfers the data and the assets necessary for processing it.
-
-An example in pseudo-code can be analyzed below:
-
+An example in pseudo-code can be analyzed below: \\
 
 \textit{Client pseudo-code}
+\begingroup
+\scriptsize
 \begin{verbatim}
 var jobId = randomUniqueIdGenerator();
 sendJob(jobId, job); // job object includes the files names being manipulated+assets
-\end{verbatim}
+\end{verbatim}  
+\endgroup
+
 
 
 \textit{jKeeper pseudo-code}
+\begingroup
+\scriptsize
 \begin{verbatim}
 replicateJob(); // each job replica holder will ping the jKeeper to make sure progress 
 // is made, if the node fails, other will assume its role
@@ -130,8 +131,11 @@ job.sKeepersList.forEach(function (sKeeper){
   }  
 }); //Job is complete
 \end{verbatim}
+\endgroup
 
 \textit{sKeeper pseudo-code}
+\begingroup
+\scriptsize
 \begin{verbatim}
 var sHolders = this.getsHolders(job.filename);
 sHolders.forEach(function(sHolder){
@@ -141,8 +145,11 @@ sHolders.forEach(function(sHolder){
   }
 });
 \end{verbatim}
+\endgroup
 
 \textit{sHolder pseudo-code}
+\begingroup
+\scriptsize
 \begin{verbatim}
 if(smallTask && available) {
   doIt(task, taskReport);
@@ -153,32 +160,33 @@ function taskReport(status){
   reportBack(status); // report to sKeeper
 }
 \end{verbatim}
-
+\endgroup
 
 
 
 \subsection{Reputation Mechanism}
 
-The reputation mechanism present will enable the network to identify the nodes that show more availability and have the necessary means to ascend and take a more important role. In order to evaluate each node, we define several metrics, these are: uptime, number of job completions, network throughput and computational resources(CPU) available, being the uptime, the most important, to assure stability. The reputation metric is calculated as follows:
+The reputation mechanism present will enable the network to identify the nodes that show more availability and have the necessary means to ascend and take a more important role. In order to evaluate each node, we define several metrics, these are: uptime, number of job completions, network throughput and computational resources (CPU) available, being the uptime, the most important, to assure stability. The reputation metric is calculated as follows: \\
 
-\begin{itemize}
-  \item $reputation = \alpha * log(uptime) + \beta * log(job completions) + \gamma * log(network throughput) + \delta * log (CPU)$ 
-  \item $\alpha+ \beta+ \gamma+ \delta = 1$
-  \item $\alpha > \beta + \gamma + \delta$
-\end{itemize}
+$ \textbf{reputation} = \alpha * log(uptime) + \beta * log(job completions) + $ \\
+$          \gamma * log(network throughput) + \delta * log (CPU)$
 
-We chose to normalize the metrics and give more importance to the uptime of the system, because this is the one enabling a more stable network for storage.
+where: \\
+  $\alpha+ \beta+ \gamma+ \delta = 1$; \\
+  $\alpha > \beta + \gamma + \delta$;  \\
 
-The reputation of each node is stored with its node identifier on the `ascended hash ring', each time a job is completely successfully, his score gets updated and in case it reaches the required level to ascend, the jKeeper that was updating his score will enable and deploy the remaining features(storage and job schedule module) he needed to join the ascended group. 
+We chose to normalize the metrics and give more importance to the uptime of the system, because this is the one metric allowing a more stable network for storage.
+
+The reputation of each node is stored with its node identifier on the `ascended hash ring'. Each time a job is completely successfully, this score gets updated and in case it reaches the required level to ascend, the jKeeper that was updating thus score will enable and deploy the remaining features (storage and job schedule module) it needed to join the ascended group. 
 
 \subsection{Client API and CLI}
 
-The client API goal is to be familiar to experienced developers using cloud providers today and at the same time, respect the Unix philosophy, where the job work flows are composed by a stream of assets, that do one thing and one thing well. It will support CRUD operations through a REST with JSON API, a filesystem-like interface(directories and objects), where user is identified by a username and it maps to the paths shown in Table~\ref{tbl:dirrepnet}: 
+The client API goal is to be familiar to experienced developers using cloud providers today and at the same time, respect the Unix philosophy, where the job work flows are composed by a stream of assets, that do one thing and one thing well. It will support CRUD operations through a REST with JSON API, a filesystem-like interface (directories and objects), where user is identified by a username and it maps to the paths shown in Table~\ref{tbl:dirrepnet}: 
 
 \begin{table}
   \begin{tabular}{ p{3cm} | p{9cm} }
   % \hline 
-  Directory & Description \\
+  Path & Description \\
   \hline 
   /:username/jobs/ & where new jobs can be inserted by the user \\
   \hline
@@ -195,7 +203,7 @@ The client API goal is to be familiar to experienced developers using cloud prov
   \label{tbl:dirrepnet}
 \end{table}
 
-We provide a REST API for the developer to use the reason behind this design decision is to create a familiar interface to the majority of webdevelopers. The server replying to this requests defined in Table~\ref{tbl:restapi}, can be a public our private proxy, in the user machine, behind a company firewall or as a public service available to the community, so it remains portable and doesn't lock the user to a provider.
+We provide a REST API for the developer to use. The reason behind this design decision is to create a familiar interface to the majority of web developers. The server replying to these requests defined in Table~\ref{tbl:restapi}, can be a public or a private proxy, in the user machine, behind a company firewall or as a public service available to the community. Thus, it remains portable and does not lock in the user to a provider.
 
 \begin{table}
   \begin{tabular}{ l | c | p{6cm} }
@@ -216,18 +224,19 @@ We provide a REST API for the developer to use the reason behind this design dec
     Action: ListJobs & \multicolumn{2}{l}{GET /:username/jobs} \\
     Action: GetJob & \multicolumn{2}{l}{GET /:username/home/jobs/:jobId} \\
     Action: GetJobOutput & \multicolumn{2}{l}{GET /:username/jobs-reports/:jobId} \\
-    \multicolumn{3}{p{12cm}}{\textbf{note:} Create Job, several arguments are passed, most importantly, an array named ``phases'' that includes the orders with assets necessary in order to execute the job(e.g. `grep -ci' or if its a new asset, it should be a JS object with a closure.)} \\
+    \hline \\
+    \multicolumn{3}{p{12cm}}{\textbf{Note:} Create Job, several arguments are passed, most importantly, an array named ``phases'' that includes the orders with assets necessary in order to execute the job(e.g. `grep -ci' or if its a new asset, it should be a JS object with a closure.)} \\
     \hline 
   \end{tabular}
-  \caption{REST API - 1st draft, might change with implementation}
+  \caption{browserCloud.js REST API Draft}
   \label{tbl:restapi}
 \end{table}
 
-We are also including a CLI tool to enable quickly bash scripts for computation jobs and file storage, this CLI uses in the background the API defined in Table~\ref{tbl:restapi}. For example, if we are looking for video transcoding: ``hcjob create /path/to/file | ffmpeg | /path/to/out.webm''. The rest of the commands are:
+We are also including a CLI\footnote{CLI - Command Line Interface} tool to enable quickly bash scripts for computation jobs and file storage, this CLI uses in the background the API defined in Table~\ref{tbl:restapi}. For example, if we are looking for video transcoding: ``hcjob create /path/to/file | ffmpeg | /path/to/out.webm''. The rest of the commands are:
   
 \begin{itemize}
-  \item \textbf{\$ hcls}  - List files in a directory
-  \item \textbf{\$ hcget} - Get an object stored
-  \item \textbf{\$ hcput} - Store an object
-  \item \textbf{\$ hcjob} - Initialize a job   
+  \item \textbf{\$ bcls}  - List files in a directory
+  \item \textbf{\$ bcget} - Get an object stored
+  \item \textbf{\$ bcput} - Store an object
+  \item \textbf{\$ bcjob} - Initialize a job   
 \end{itemize} 
