@@ -24,7 +24,7 @@ In this sectio, we address the state of the art of the research topics, more rel
 
 
 
-
+% INTERCLOUD
 
 
 
@@ -37,28 +37,10 @@ In this sectio, we address the state of the art of the research topics, more rel
 %---------{Volunteered resource sharing}--------------------------
 % 
 \subsection{Volunteered resource sharing}
-%TODO 
 
+Volunteered resource sharing networks enable the cooperation between individuals to solve higher degree computational problems, by sharing idle resources that otherwise would be wasted. This individuals may or may not have a direct interest with the problem that someone is trying to solve, however they share the resources for a common good. 
 
-% Acronymns        
-% Application-level networks (ALN) 
-
-% This is perfect to define the problem
-% 
-% Distributed evolutionary computing system based on web browsers with JavaScript
-% Jerzy Duda and Wojciech Dłubacz
-% Algorithms based on laws of nature:
-% Evolutionary Algorithm - EA
-% Simulated annealing - SA
-% Colony optimization - ACO
-% Particle swarmn optimization - PSO
-% Artificial Bee Colonies - ABC
-        
-% You can divide the algoritms into two sets:
-% Single Solution in each iteration
-% Set of solutions, often refered as population
-
-% You can decrease the computation time with metaheuristics
+The type of computations performed in this Application-level networks(ALN), are possible thanks to the definition of the problem in meta-heuristics, describing it with as laws of nature\cite{Duda2013}, such as: Evolutionary algorithms (EA); Simulated annealing (SA); Colony optimization (ACO); Particle swarm optimization (PSO), Artificial Bee Colonies (ABC) and more. This process creates small individual sets of units of computation, known as `bag of tasks', easy to distribute through several machines in and executed in parallel.
                   
 % Models for distributed computation:
 % Global parallelization model - One population sharded in small sets computed by several slaves
@@ -68,7 +50,14 @@ In this sectio, we address the state of the art of the research topics, more rel
 
 
 
+
 \subsubsection{3.2.1 Hybrid and Community Clouds}
+
+  
+
+
+
+
 %TODO  * Computational Grids - TeraGrid, ChinaGrid and APACGrid
 %TODO  * Data Grids - LHCGrid GriPhyN
 %TODO  * Interaction Grids (focus on collaborative visualization) - AccessGrid
@@ -87,11 +76,15 @@ In this sectio, we address the state of the art of the research topics, more rel
 
 
 
-\subsubsection{3.2.2 Cycle and Storage Sharing, using Volunteer Computing Systems}
-%TODO Here is more about projects, not about algorithms (SETI, freenet, etc) %TODO  Kazaa, napster, Seti, foldings, afins
-% Get inspired by ginger 
 
 
+\subsubsection{3.2.2 Cycle and Storage Sharing, using Volunteer Resource Systems -}
+
+When we talk about peer-to-peer applications, most people will remember volunteered storage sharing, as it most widely known for it's ability to distribute content, thanks to the illegal distribution of copyrighted software and media. However if we take a look at the whole spectrum of volunteer resource systems, we will see that are two categories, one for content sharing and the second one for cycle sharing, the second is known today as Public Computing.
+
+Storage sharing systems are the popular type from the two categories of peer-to-peer systems, specially because their ability to distribute content without legal control, which after their success, systems like Napster\footnote{napster link} were legally forced to shutdown. One of the key benefits of using a peer-to-peer storage sharing system is their ability to optimize the usage of each individual user limited bandwidth, enabling file partitioned transfers from multiple users, using the hash of each partition to prove its integrity. Each file availability grows organically with the interested in that file, because more copies will exist in the network. Other examples of this type of system are: KaZaA\footnote{kazaa link}, BitTorrent\footnote{bit torrent link} and Freenet\cite{Clarke2001}.
+
+The second category is the systems that fit into the category of Public Computing, where users share their idle computer cycles, this can be done by starting the process when the user is not performing any process thats relevant for him/her, or by establish the tasks as low priority processes, so it doesn't affect the user experience, one way of doing this is using a screen saver, so the shift to an idle state is obvious to the machine. This systems are possible because we can divide bigger computational jobs into smaller tasks that can run independently and in parallel, this is known as the ``bag-of-tasks'' model of distributed computing. Several systems using this currently are Folding@Home, Genome@Home\cite{Larson2002} and SETI@Home\cite{Anderson2002}\cite{Korpela2001}/
 
 \subsubsection{3.2.3 Peer-to-Peer Networks and Architectures -}  
 Efficient resource discovery mechanisms are fundamental for a distributed system success, such as grid computing, cycle sharing or web application infrastructures\cite{Ranjan2006}, although in the centralized model, by keeping data bounded inside a data center, we have a stable and scalable way for resource discovery, this does not happen in a P2P network, where peers churn rate can vary greatly, there is no way to start new machines on demand for high periods of activity, the machines present are heterogeneous and so is their Internet connectivity, creating an unstable and unreliable environment. To overcome this challenges, several researches have been made in order to optimize how data is organized across all the nodes, improving the performance, stability and the availability of resources. The following paragraphs will describe the current state of the art P2P organizations, typically categorized in P2P literature as Unstructured or Structured\cite{Milojicic2003}, illustrated in Figure ~\ref{fig:Different types of P2P Overlay networks organizations}.
