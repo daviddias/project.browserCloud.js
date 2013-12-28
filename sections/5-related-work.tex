@@ -19,23 +19,24 @@ Cloud Computing today is available as a set of Services, from Infrastructure(Iaa
 
   \textit{``Computing may someday be organized as a public utility just as the telephone system is a public utility, Each subscriber needs to pay only for the capacity he actually uses, but he has access to all programming languages characteristic of a very large system. Certain subscribers might offer service to other subscribers. The computer utility could become the basis of a new and important industry.''}, Professor John McCarthy.
 
-Cloud computing presents several advantages comparing to the Conventional Data Center type of architecture\cite{Armbrust}, seen in Table~\ref{tab:advantagesofcloudcomputing}, but there are some tradeoffs such as the `lock-in' syndrome, which locks the platforms to a specific cloud provider due to lack of interoperability and portability of the software stack, plus there is currently also security issues because of the shared CPU and physical memory between different applications from different clients, which enables one of the clients to access data from the other if the application is not well confined.
+Cloud computing presents several advantages comparing to the Conventional Data Center type of architecture\cite{Armbrust}, seen in Table~\ref{tbl:advantagesofcloudcomputing}, but there are some tradeoffs such as the `lock-in' syndrome, which locks the platforms to a specific cloud provider due to lack of interoperability and portability of the software stack, plus there is currently also security issues because of the shared CPU and physical memory between different applications from different clients, which enables one of the clients to access data from the other if the application is not well confined.
 
 \begin{table}
-  \begin{tabular}{ c | c | c }
-  \hline \\
+  \centering
+  \begin{tabular}{| p{6cm} | p{2cm} | p{2cm} |}
+  \hline 
   Advantage & Public Cloud & Conventional Data Center \\
-  \hline \\
+  \hline 
   Appearance of infinite computing resources on demand & Yes & No \\
-  \hline \\
+  \hline 
   Elimination of an up-front commitment by Cloud users & Yes & No \\
-  \hline \\
+  \hline 
   Ability to pay for use of computing resources on a short-term basis as needed & Yes & No \\
-  \hline \\
+  \hline 
   Economies of scale due to very large data centers & Yes & Usually not \\
-  \hline \\
+  \hline 
   Higher utilization by multiplexing of workloads from different organizations & Yes & Depends on company size \\
-  \hline \\
+  \hline 
   Simplify operation and increase utilization via resource virtualizations & Yes & No \\
   \hline  
   \end{tabular}
@@ -43,13 +44,13 @@ Cloud computing presents several advantages comparing to the Conventional Data C
   \label{tbl:advantagesofcloudcomputing}
 \end{table}
 
-\subsubsection{Cloud interoperability}
+\subsubsection{3.1.1 Cloud interoperability}
 
 The lack of portability was identified as a major problem by growing companies and become one of the main factors when opting for a Cloud Provider, the industry realized this issue and started what is known as OpenStack\footnote{http://www.openstack.org/}.
 
 OpenStack is an ubiquitous open source cloud computing platform for public and private clouds. It was founded by Rackspace Hosting and NASA, OpenStack has grown to be a standard of massively scalable open source cloud operating system. The main goal is go give the opportunity to any company to create their cloud stack and therefore, be compatible with other cloud providers since day one. All OpenStack software is licensed under the Apache 2.0 license, giving the possibility for anyone to involve the project and contribute. 
 
-Although OpenStack is free and open source, there is an underlying lie that is the fact that you still have to use OpenStack in order to have portability, it is a more generalized version of the `lock-in syndrome'. We have currently other solutions available that give application developer an abstraction on top of different Cloud Providers, instead of changing the architecture of each Cloud, such as: IEEE Intercloud\footnode{http://cloudcomputing.ieee.org/intercloud}, pkgcloud\footnote{https://github.com/nodejitsu/pkgcloud} and Eucalyptus\cite{Nurmi2009}, described in the following two paragraphs.
+Although OpenStack is free and open source, there is an underlying lie that is the fact that you still have to use OpenStack in order to have portability, it is a more generalized version of the `lock-in syndrome'. We have currently other solutions available that give application developer an abstraction on top of different Cloud Providers, instead of changing the architecture of each Cloud, such as: IEEE Intercloud\footnote{http://cloudcomputing.ieee.org/intercloud}, pkgcloud\footnote{https://github.com/nodejitsu/pkgcloud} and Eucalyptus\cite{Nurmi2009}, described in the following two paragraphs.
 
 
 \paragraph{\textbf{IEEE Intercloud -}} % (fold)
