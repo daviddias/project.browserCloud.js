@@ -6,16 +6,17 @@
 
 \section{Objectives}
 
-Our main goal with this work is to explore and implement a system that is able to take advantage of volunteered computer cycles through the most ubiquitous growing platform, the browser. In order to create this system, several components will be developed:
+Our main goal with this work is to design and implement a system that is able to take advantage of volunteered computer cycles through the most ubiquitous growing platform, the browser. In order to create this system, several components will be developed:
 
 \begin{itemize}
-  \item Structured peer-to-peer overlay network for browsers to communicate between themselves, without being necessary to take the data or the computation to a centralized system.
-  \item An efficient storage module that offers persistence and availability, using browser storage for fast indexing.
-  \item A job scheduler able to receive jobs and coordinate it between the nodes inside the network, without having to recur to a centralized control system.
+  \item An efficient local storage module that offers persistence and availability, using browser storage for fast indexing.
+  \item A distributed job scheduler able to receive jobs and coordinate with the nodes inside the network, without having to recur to a centralized control system.
   \item A job executioner able to receive different assets to perform the jobs (image/video manipulation, calculation, etc), taking advantage of the dynamic runtime available by the predominant language in the browser, javascript.
+  \item A server to work as the entry point for browser to download the code necessary to run browserCloud.js logic. This is the only point that is considered to be centralized in the network, due to the limitation of browsers being typically behind NAT and not having static IPs
+  \item Structured peer-to-peer overlay network for browsers to communicate directly among themselves, without being necessary to take the data or the computation to a centralized system.
   \item A client API, RESTful, so it is easy to develop applications for Desktops and mobile platforms without having to change the codebase or building a new SDK
   \item A command line interface for access like `mountable' partition to the storage in browserCloud.js, able to dispatch jobs in a very Unix way, by piping the results from one task to another task.
-  \item A server to work as the entry point for browser to download the code necessary to run browserCloud.js logic. This is the only point that is considered to be centralized in the network, due to the limitation of browsers being typically behind NAT and not having static IPs
+ 
 \end{itemize}
 
-These components are fully described in section 5. After its development, a proposed evaluation is going to be executed, according to a set of assessment metrics, enabling us to compare the viability of browserCloud.js as a Cloud provider, comparing to existing centralized Cloud systems.
+These components are fully described in section 4. After its development, a proposed evaluation is going to be executed, according to a set of assessment metrics, enabling us to compare the viability of browserCloud.js as a Cloud provider, comparing to existing centralized Cloud systems.
