@@ -53,13 +53,31 @@ OpenStack is an ubiquitous open source cloud computing platform for public and p
 Although OpenStack is free and open source, there is an underlying lie that is the fact that you still have to use OpenStack in order to have portability, it is a more generalized version of the `lock-in syndrome'. We have currently other solutions available that give application developer an abstraction on top of different Cloud Providers, instead of changing the architecture of each Cloud, such as: IEEE Intercloud\footnote{http://cloudcomputing.ieee.org/intercloud}, pkgcloud\footnote{https://github.com/nodejitsu/pkgcloud} and Eucalyptus\cite{Nurmi2009}, described in the following two paragraphs.
 
 
-\paragraph{\textbf{IEEE Intercloud -}} % (fold)
-\label{par:IEEE Intercloud }
+\paragraph{\textbf{IEEE Intercloud}} % (fold)
+\label{par:IEEE Intercloud}
+
+pushes forward a new Cloud Computing design pattern, which the possibility to federate several clouds operated by enterprise or other providers, increasing the scalability and portability of applications. This federation is known as `Intercloud' in which IEEE is creating technical standards (IEEE P2302) with interoperability in its goal. Currently IEEE has already available an Testbed, the IEEE Intercloud Testbed, which provides a global lab for testing Intercloud interoperability features.
+
+The envisioned Intercloud architecture categorizes its components into three main parts, see in Figure~\ref{fig:IEEE Intercloud Testbed Architecture}:
+
+\begin{itemize}
+  \item Intercloud Gateways: analogous to an Internet router that connects an Intranet to the Internet.
+  \item Intercloud Exchanges: analogous to Internet exchanges and peering points (known as brokers in the US NIST Reference Architecture) where clouds can interoperate.
+  \item Intercloud Roots: A set of essential services such as: Naming Authority, Trust Authority, Messaging, Semantic Directory Services, and other “root” capabilities. This services work with an hierarchical structure.
+\end{itemize}
+
+ 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.78\textwidth]{img/testbed-technology.jpg}
+  \caption{IEEE Intercloud Testbed Architecture}
+  \label{fig:IEEE Intercloud Testbed Architecture}
+\end{figure}
 
 % paragraph IEEE Intercloud - (end)
 
 
-\paragraph{\textbf{pkgcloud }} % (fold)
+\paragraph{\textbf{pkgcloud}} % (fold)
 \label{par:pkgcloud }
 
 is an open source standard library that abstracts differences between several cloud providers, offering a unified vocabulary for services like storage, compute, DNS, load balancers, so the application developer doesn't have to be concern with creating different implementations for each cloud, instead, just make the provision in the one that is most cost/effective. Currently it only supports applications build using Node.js.
@@ -67,42 +85,21 @@ is an open source standard library that abstracts differences between several cl
 
 % paragraph paragraph_name (end)
 
-\paragraph{\textbf{Eucalyptus }} % (fold)
-\label{par:Eucalyptus -}
+\paragraph{\textbf{Eucalyptus}} % (fold)
+\label{par:Eucalyptus}
+
+is a free and open source software to build Amazon Cloud like architectures for a private and/or hybrid Clouds. From the three solutions described, Eucalyptus is the one that is more deeply entangled with the concept of a normal Cloud, packing a: Client-side API, a Cloud Controller, S3 storage compliant modules, a cluster controller and a node controller, as seen in Figure~\ref{fig:eucalyptus}. Eucalyptus has all the components to build an entire cloud, however, since its compatible, specially, with Amazon Cloud, we can use Eucalyptus to migrate our services or provision Amazon services and work without having to mess with the application or the system itself.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.95\textwidth]{img/eucalyptus-architecture.png}
+  \caption{Eucalyptus Architecture}
+  \label{fig:eucalyptus}
+\end{figure}
+
+This hybrid model gives a desired environment for a development, test and deploy stack, that can support Amazon Cloud as the elasticity necessary to sustain during service spikes, this way, a company that has its private cloud doesn't need to over provision in advance.
 
 % paragraph Eucalyptus - (end)
-
-OpenStack
-Pkgcloud
-Intercloud
-Eucalyptus 
-
-
-
-
-
-
-
-%TODO More traditional known clouds EC2, AZURE, App Engine, ETC
-%TODO openstack http://www.openstack.org/
-% Ref links 
-% http://www.openstack.org/summit/openstack-summit-hong-kong-2013/session-videos/presentation/ibm-keynote-managing-the-next-era-of-computing-with-an-open-cloud-architecture
-% http://www.openstack.org/summit/openstack-summit-hong-kong-2013/session-videos/presentation/getting-started-with-openstack
-%  
-%TODO opencloud
-
-
-
-
-
-% INTERCLOUD
-http://cloudcomputing.ieee.org/intercloud
-
-
-
-
-
-
 
 
 % 
