@@ -11,11 +11,16 @@ The proposed system will be evaluated with the goal of comparing to existing cen
 
 \subsection{Evaluation of the data consistency, availability and partition tolerance}
 
-Data consistency will be implicitly granted by having a put/delete system only, since an update to a file means rewriting the file again, a new ID will be created and by doing so, a new sKeeper is elected, avoiding a distributed lock or conflict over the same id of file. Nevertheless, availability and partition tolerance must be assessed, having in consideration the hostility of environment, we want to prove that Nodes considered trustworthy(ascended), are in fact enough to guaranteed the necessary availability for any given file at any given time and that the replica number can keep stable without generating too much message overhead. To prove this, resilience will be put into test by varying the churn rate with several usage scenarios, for example, a surge.
+In browserCloud.js files are immutable, any operation that involves data manipulation will create a new file with the changes, this means that once the file is ready to be read, its by default, the most current version, any the transactional logic of writing(PUT) and deleting(DELETE) files is kept on the application using browserCloud.js. 
+
+In this evaluation, our target is to test how the system behaves in different conditions, in order to assess the data consistency strategies possible (Eventual Consistency, Monotonic Read Consistency, Immediate Consistency, etc).
+
+Other point that we want to evaluate is how tolerant is browserCloud.js for data partition, taking into account we are limited by the available storage that the browser enables and of course, the need to have smaller chunks to be quickly transfered when Churn Rate is high.
 
 This tests will be executed in two different stages, the first one, ``in lab'', will be a controlled P2P environment, where different browsers and computers will be used for tests, in order to evaluate and calculate the factors that are used to calculate values such as: reputation, threshold to ascend one Node and block size. 
 
 After realizing how the system can perform best, a ``field'' trial will be executed, this will be executed by approaching volunteers that might want to contribute to the experiment, loading the code into their browser so real world tests can be performed.
+
 
 \subsection{Evaluation of latency when executing a job and storing/fetching data}
 
