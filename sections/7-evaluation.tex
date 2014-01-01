@@ -6,7 +6,8 @@
 
 \section{Evaluation}
 
-The proposed system will be evaluated having into consideration the several dimensions that will define its ability to provide a reliable storage, following the CAP theorem(Consistency , Availability and Partition Tolerant), adding also as criteria, its latency and speed while performing distributed jobs over the stored data.
+The proposed system will be evaluated with the goal of comparing to existing centralized non P2P cloud, P2P distributed job computing and storage. The desired output of this analysis will be to produce a quantifiable and comparable metrics to other systems, taking into account its scalability, resilience, availability, processing power and latency. In the end, we expect to have an ``type of application/solution'', mentioning the advantages present using browserCloud.js in comparison with the other systems, such as table~\ref{tbl:cloudcomparisson}.
+
 
 \subsection{Evaluation of the data consistency, availability and partition tolerance}
 
@@ -16,6 +17,39 @@ This tests will be executed in two different stages, the first one, ``in lab'', 
 
 After realizing how the system can perform best, a ``field'' trial will be executed, this will be executed by approaching volunteers that might want to contribute to the experiment, loading the code into their browser so real world tests can be performed.
 
-\subsection{Evaluation of latency when storing, fetching and jobs execution}
+\subsection{Evaluation of latency when executing a job and storing/fetching data}
 
-To prove that the system is app development ready, we need to optimize and verify how much performant it behaves, this will enable for it's users to know before hand how it stacks to current cloud systems using a more traditional approach. To evaluate and identify how the system behaves, several tests will be executed during the ``in lab'' and ``field'' experiments, varying the load, the complexity of the job, the churn rate and the number of nodes.
+One of the key factors for an App ready cloud platform is its latency, storing and fetching data has to be rapid enough that it doesn't limits the performance of the applications using browserCloud.js. Latency varies depending on the system usage, in order to evaluate it correctly, tests will be performed, changing several factors that will impact latency:
+
+\begin{itemize}
+  \item Churn Rate - Varying the churn rate will create instability the computing power of the platform, creating scenarios where job tasks have to be resent to another node to be completed, adding delay to the estimated time of the job. We can also loose the point of contact to the network, which makes us the need to reconnect again, adding more time for any request.
+  \item Number of nodes - The greater the network, the more distributed is the load, which means faster request handling by the node, however, as it grows, the number of messages traded between the node grows and these have impact as well. 
+  \item Number of parallel connections performing requests - With this variance, we want to make sure how much traffic and load the system is able to cope
+  \item Number of requests - This is related with the number of parallel connections, however, more focused on number per application
+  \item Number of jobs running - Jobs manipulate data ans consume the processing power of the system, which also influences latency
+  \item Different volumes of file storage - Different types of data have different needs, serving big volumes of data is an harder task because it must be served by several nodes
+\end{itemize}
+
+The test will be executed in two different phases: 1) the first in a controlled environment, being able to modify the churn rate on demand and evaluation its behavior, these tests will be essential to evaluate and tune browserCloud.js to the 2) real world tests, using pure voluntary browsers, which are a non controlled environment. These tests will permit us to assess quantifiable results to be compared with other cloud like platforms.
+
+\subsection{Envisioned final analysis}
+
+Once the evaluation of each component its done, we envisioned a one by one comparison between the most used or known system for distributed computing jobs and storage, point which excels the best for the type of task with the respective trade offs. In table~\ref{tbl:cloudcomparisson}, we can an example
+
+\begin{table}
+  \begin{tabular}{| c | c | c | c | c |}
+  \hline
+  Type of Task & AWS & SETI@Home & browserCloud.js & community-lab \\
+  \hline
+  Genome Sequencing & & & & \\ 
+  \hline
+  Photo Storage & & & & \\
+  \hline  
+  Realtime Application & & & & \\
+  \hline
+  ... & & & & \\
+  \hline
+  \end{tabular}
+  \caption{Possible table of comparison for browserCloud.js against other computing and storage distributed platforms cloud like}
+  \label{tbl:cloudcomparisson}
+\end{table}
