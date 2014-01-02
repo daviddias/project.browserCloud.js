@@ -40,8 +40,7 @@ Next, we have the Service Routing layer, this service is responsible to guide th
 
 Last, we have the components, individual modules that do one thing and one thing well. Currently, we present the Storage module, responsible for holding the data; the Job Scheduler, responsible to orchestrate jobs issued by the users; the assets needed to execute the jobs and finally; the job executor, the module that will execute the jobs in a separate process using webworkers.
 
-% Doug McIlroy, then head of the Bell Labs CSRC and contributor to Unix pipes,[1] summarised Unix philosophy as follows:[2]
-% This is the Unix philosophy: Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface.
+
 
 \begin{figure}[h!]
   \centering
@@ -110,12 +109,13 @@ sendJob(jobId, job); // job object includes the files names being manipulated+as
 \begingroup
 \scriptsize
 \begin{verbatim}
-replicateJob(); // each job replica holder will ping the jKeeper to make sure progress 
+var jobLog = createNewJobLog();
+replicateJob(jobLog); // each job replica holder will ping the jKeeper to make sure progress 
 // is made, if the node fails, other will assume its role
 job.sKeepersList.forEach(function (sKeeper){
   commandJobExecution(job, sKeeper, statusReport);
   function statusReport(status){
-    log(status);
+    jobLog.log(status);
   }  
 }); //Job is complete
 \end{verbatim}
@@ -169,7 +169,14 @@ The reputation of each node is stored with its node identifier on the `ascended 
 
 \subsection{Network Architecture}
 
-Network architecture can be seen on Figure \ref{fig:overallarchitecture}). Nodes (volunteer computers), are divided into two Chord DHTs with the purpose of separating the nodes with storage responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network. Keeping the files in nodes have proven to be more trustworthy for staying longer in the network makes the system more robust by keeping the file replica level stable. This also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Nevertheless, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
+We designed browserCLoud.js network architecture as shown in Figure~\ref{fig:overallarchitecture}, being composed by 4 different elements, being:
+
+\begin{itemize}
+  \item Normal Nodes - We refer to normal node as the node responsible for only computation task in our network.
+  \item Ascended Nodes - These nodes are responsible for both computation, storage and job coordination.
+  \item API endpoints - The rendezvous points for the browsers to download the necessary code to enter in the browserCloud.js network. These API endpoints are also responsible for establishing the connection from a client to a browser.
+  \item Clients that use browserCloud.js - Applications using the RESTful API to interact with browserCloud.js
+\end{itemize}
 
 \begin{figure}[h!]
   \centering
@@ -178,11 +185,15 @@ Network architecture can be seen on Figure \ref{fig:overallarchitecture}). Nodes
   \label{fig:overallarchitecture}
 \end{figure}
 
-Since browsers cannot effectively have a static IP nor have a DNS record updated on demand pointing to themselves, we designed the API endpoints as the rendezvous between browsers and clients.
 
 \subsubsection{4.2.1 Structured Overlay Network -}
 
+Nodes are divided into two Chord DHTs with the purpose of separating the nodes with storage and job coordination responsibility responsibility from the ones with only computing responsibility. The reason behind this decision is due to the high churn rate in a P2P network. Keeping the files in nodes that have proven to be more trustworthy for staying longer in the network makes the system more robust, keeping the file replica level stable. This also reduces the message overhead that would require to keep the replica level in a more inconsistent environment. Nevertheless, the more volatile nodes are perfect for short computing operations, till they proven to be trustworthy to `ascend' in the network.
+
+
 \subsubsection{4.2.1 Rendezvous points -}
+
+Since browsers cannot effectively have a static IP nor have a DNS record updated on demand pointing to themselves, we designed the API endpoints as the rendezvous between browsers and clients, so the connection can be established.
 
 \subsection{browserCloud.js usage}
 
