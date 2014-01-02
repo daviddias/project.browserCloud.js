@@ -6,20 +6,35 @@
 
 \section{Related Work}
 
-In this section, we address the state of the art of the research topics, more relevant to our proposed work, namely: Cloud Computing, Volunteer Computing, P2P Networks and the Web Platform.
+In this section, we address the background state of the art of the research topics, more relevant to our proposed work, namely: Cloud Computing, Volunteer Computing, P2P Networks and the Web Platform.
 
 % 
 %---------{Cloud computing and Open Source Cloud Platforms}-------
 % 
 \subsection{Cloud computing and Open Source Cloud Platforms}
 
-Cloud Computing is a term used to describe a large number of computers, connected through a network. The computing power from these computers is typically made available as virtual machines, without a real physical existence, enabling the possibility to scale up and down its resources on the fly, without affecting the end user.
+Cloud Computing is a term used to describe a large number of computers, connected through a network. The computing power from these computers is typically made available as virtual machines, without dependence to a particular real physical existence, enabling the possibility to scale up and down its resources on the fly, without affecting the end user.
 
-Cloud Computing today is available as a set of Services, from Infrastructure(IaaS), Platform (PaaS), Software (SaaS), Network (NaaS) and physical hardware (Metal as a Service). However, the idea of having computing organized as a public utility just like the telephone or the electricity service is not new, it was envisioned around 1961, by Professor John McCarthy, who said in MIT's centennial celebration:
+\begin{table}
+  \begin{tabular}{| c | c | c |}
+  \hline 
+  Acronym & Full Name & Description \\
+  IaaS & & \\
+  PaaS & & \\
+  SaaS & & \\
+  NaaS & & \\
+  MaaS & & \\
+  \hline   
+  \end{tabular}
+  \caption{The different types of Cloud Computing services being offered}
+  \label{tbl:aastypes}
+\end{table}
+
+Cloud Computing today is available as a set of Services, from Infrastructure(IaaS), Platform (PaaS), Software (SaaS), Network (NaaS), physical hardware (Metal as a Service) and more as described on Table~\ref{tbl:aastypes}. However, the idea of having computing organized as a public utility just like the telephone or the electricity service is not new, it was envisioned around 1961, by Professor John McCarthy, who said in MIT's centennial celebration:
 
   \textit{``Computing may someday be organized as a public utility just as the telephone system is a public utility, Each subscriber needs to pay only for the capacity he actually uses, but he has access to all programming languages characteristic of a very large system. Certain subscribers might offer service to other subscribers. The computer utility could become the basis of a new and important industry.''}, Professor John McCarthy.
 
-Cloud computing presents several advantages comparing to the Conventional Data Center type of architecture\cite{Armbrust}, seen in Table~\ref{tbl:advantagesofcloudcomputing}, but there are some tradeoffs such as the `lock-in' syndrome, which locks the platforms to a specific cloud provider due to lack of interoperability and portability of the software stack, plus there is currently also security issues because of the shared CPU and physical memory between different applications from different clients, which enables one of the clients to access data from the other if the application is not well confined.
+Cloud computing presents several advantages comparing to the Conventional Data Center type of architecture\cite{Armbrust}, seen in Table~\ref{tbl:advantagesofcloudcomputing}, similar to the vendor lock-in that lead to the adoption of open distributed systems in the 1990, moreover there are currently also security issues due to shared CPU and physical memory between different applications from different clients, which enables one of the clients to access data from the other if the application is not well confined.
 
 \begin{table}
   \centering
@@ -46,24 +61,24 @@ Cloud computing presents several advantages comparing to the Conventional Data C
 
 \subsubsection{3.1.1 Cloud interoperability}
 
-The lack of portability was identified as a major problem by growing companies and become one of the main factors when opting for a Cloud Provider, the industry realized this issue and started what is known as OpenStack\footnote{http://www.openstack.org/}.
+The lack of portability has already been identified as a major problem by growing companies, and is becoming one of the main factors when opting, or not, for a Cloud Provider, the industry realized this issue and started what is known as OpenStack\footnote{http://www.openstack.org/}.
 
-OpenStack is an ubiquitous open source cloud computing platform for public and private clouds. It was founded by Rackspace Hosting and NASA, OpenStack has grown to be a standard of massively scalable open source cloud operating system. The main goal is go give the opportunity to any company to create their cloud stack and therefore, be compatible with other cloud providers since day one. All OpenStack software is licensed under the Apache 2.0 license, giving the possibility for anyone to involve the project and contribute. 
+\textbf{OpenStack} is an ubiquitous open source cloud computing platform for public and private clouds. It was founded by Rackspace Hosting and NASA. OpenStack has grown to be \textit{de facto} standard of massively scalable open source cloud operating system. The main goal is go give the opportunity to any company to create their cloud stack and therefore, be compatible with other cloud providers since day one. All OpenStack software is licensed under the Apache 2.0 license, giving the possibility for anyone to involve the project and contribute. 
 
-Although OpenStack is free and open source, there is an underlying lie that is the fact that you still have to use OpenStack in order to have portability, it is a more generalized version of the `lock-in syndrome'. We have currently other solutions available that give application developer an abstraction on top of different Cloud Providers, instead of changing the architecture of each Cloud, such as: IEEE Intercloud\footnote{http://cloudcomputing.ieee.org/intercloud}, pkgcloud\footnote{https://github.com/nodejitsu/pkgcloud} and Eucalyptus\cite{Nurmi2009}, described in the following two paragraphs.
+Although OpenStack is free and open source, there is an underlying illusion that is the fact that you still have to use OpenStack in order to have portability, it is just a more generalized and free version of the `lock-in syndrome'. We have currently other solutions available that give application developer an abstraction on top of different Cloud Providers, instead of changing the architecture of each Cloud, such as: IEEE Intercloud\footnote{http://cloudcomputing.ieee.org/intercloud}, pkgcloud\footnote{https://github.com/nodejitsu/pkgcloud} and Eucalyptus\cite{Nurmi2009}, described in the following two paragraphs.
 
 
 \paragraph{\textbf{IEEE Intercloud}} % (fold)
 \label{par:IEEE Intercloud}
 
-pushes forward a new Cloud Computing design pattern, which the possibility to federate several clouds operated by enterprise or other providers, increasing the scalability and portability of applications. This federation is known as `Intercloud' in which IEEE is creating technical standards (IEEE P2302) with interoperability in its goal. Currently IEEE has already available an Testbed, the IEEE Intercloud Testbed, which provides a global lab for testing Intercloud interoperability features.
+pushes forward a new Cloud Computing design pattern, with the possibility to federate several clouds operated by enterprise or other providers, increasing the scalability and portability of applications. This federation is known as `Intercloud' in which IEEE is creating technical standards (IEEE P2302) with interoperability in its core goals. Currently IEEE has already available an Testbed, the IEEE Intercloud Testbed, which provides a global lab for testing Intercloud interoperability features.
 
 The envisioned Intercloud architecture categorizes its components into three main parts, see in Figure~\ref{fig:IEEE Intercloud Testbed Architecture}:
 
 \begin{itemize}
   \item Intercloud Gateways: analogous to an Internet router that connects an Intranet to the Internet.
   \item Intercloud Exchanges: analogous to Internet exchanges and peering points (known as brokers in the US NIST Reference Architecture) where clouds can interoperate.
-  \item Intercloud Roots: A set of essential services such as: Naming Authority, Trust Authority, Messaging, Semantic Directory Services, and other “root” capabilities. This services work with an hierarchical structure.
+  \item Intercloud Roots: A set of core essential services such as: Naming Authority, Trust Authority, Messaging, Semantic Directory Services, and other “root” capabilities. This services work with an hierarchical structure and resembles the Internet backbone.
 \end{itemize}
 
  
@@ -80,7 +95,7 @@ The envisioned Intercloud architecture categorizes its components into three mai
 \paragraph{\textbf{pkgcloud}} % (fold)
 \label{par:pkgcloud }
 
-is an open source standard library that abstracts differences between several cloud providers, offering a unified vocabulary for services like storage, compute, DNS, load balancers, so the application developer doesn't have to be concern with creating different implementations for each cloud, instead, just make the provision in the one that is most cost/effective. Currently it only supports applications build using Node.js.
+is an open source standard library that abstracts differences between several cloud providers, by offering a unified vocabulary for services like storage, compute, DNS, load balancers, so the application developer does not have to be concerned with creating different implementations for each cloud. Instead, just make the provision in the one that is most cost-effective. Currently, it only supports applications built using Node.js.
 
 
 % paragraph paragraph_name (end)
@@ -88,7 +103,7 @@ is an open source standard library that abstracts differences between several cl
 \paragraph{\textbf{Eucalyptus}} % (fold)
 \label{par:Eucalyptus}
 
-is a free and open source software to build Amazon Cloud like architectures for a private and/or hybrid Clouds. From the three solutions described, Eucalyptus is the one that is more deeply entangled with the concept of a normal Cloud, packing a: Client-side API, a Cloud Controller, S3 storage compliant modules, a cluster controller and a node controller, as seen in Figure~\ref{fig:eucalyptus}. Eucalyptus has all the components to build an entire cloud, however, since its compatible, specially, with Amazon Cloud, we can use Eucalyptus to migrate our services or provision Amazon services and work without having to mess with the application or the system itself.
+is a free and open source software to build Amazon Web Services Cloud like architectures for a private and/or hybrid Clouds. From the three solutions described, Eucalyptus is the one that is more deeply entangled with the concept of a normal Cloud, packing a: Client-side API, a Cloud Controller, S3 storage compliant modules, a cluster controller and a node controller, as seen in Figure~\ref{fig:eucalyptus}. Eucalyptus has all the components to build an entire cloud, however, since its compatible, specially, with Amazon Cloud, we can use Eucalyptus to migrate our services, or provision Amazon services, and work without having to deal with the application or the system itself.
 
 \begin{figure}[h!]
   \centering
@@ -97,7 +112,7 @@ is a free and open source software to build Amazon Cloud like architectures for 
   \label{fig:eucalyptus}
 \end{figure}
 
-This hybrid model gives a desired environment for a development, test and deploy stack, that can support Amazon Cloud as the elasticity necessary to sustain during service spikes, this way, a company that has its private cloud doesn't need to over provision in advance.
+This hybrid model provides a desired environment for a development, test and deploy stack, that can support Amazon Cloud with the elasticity necessary to sustain service during spikes. This way, a company that has its private cloud does not need to over provision in advance.
 
 % paragraph Eucalyptus - (end)
 
