@@ -200,7 +200,8 @@ Since browsers cannot effectively have a static IP nor have a DNS record updated
 The client API goal is to be familiar to experienced developers using cloud providers today and at the same time, respect the Unix philosophy, where the job work flows are composed by a stream of assets, that do one thing and one thing well. It will support CRUD operations through a REST with JSON API, a filesystem-like interface (directories and objects), where user is identified by a username and it maps to the paths shown in Table~\ref{tbl:dirrepnet}: 
 
 \begin{table}
-  \begin{tabular}{ p{3cm} | p{9cm} }
+  \centering
+  \begin{tabular}{ p{3cm} | p{12cm} }
   % \hline 
   Path & Description \\
   \hline 
@@ -224,7 +225,8 @@ The client API goal is to be familiar to experienced developers using cloud prov
 We provide a REST API for the developer to use. The reason behind this design decision is to create a familiar interface to the majority of web developers. The server replying to these requests defined in Table~\ref{tbl:restapi}, can be a public or a private proxy, in the user machine, behind a company firewall or as a public service available to the community. Thus, it remains portable and does not lock in the user to a provider.
 
 \begin{table}[h!]
-  \begin{tabular}{ l | c | p{6cm} }
+  \centering
+  \begin{tabular}{ l | c | p{12cm} }
     \multicolumn{3}{ l }{\textbf{Directories}} \\
     Action: PutDirectory & \multicolumn{2}{l}{PUT /:username/home/[:directory]/:directory} \\
     Action: ListDirectory & \multicolumn{2}{l}{GET /:username/home/[:directory]/:directory} \\
@@ -234,7 +236,7 @@ We provide a REST API for the developer to use. The reason behind this design de
     Action: PutFile & \multicolumn{2}{l}{PUT /:username/home/[:directory]/:filename} \\
     Action: GetFile & \multicolumn{2}{l}{GET /:username/home/[:directory]/:filename} \\
     Action: DeleteFile & \multicolumn{2}{l}{DELETE /:username/home/[:directory]/:filename} \\
-    \multicolumn{3}{p{12cm}}{\textbf{note:} PutFile and GetFile, the body of the request and response  respectively is the file} \\
+    \multicolumn{3}{p{15cm}}{\textbf{Note:} PutFile and GetFile, the body of the request and response  respectively is the file} \\
     \hline 
     \multicolumn{3}{ l }{\textbf{Jobs}} \\
     Action: CreateJob & \multicolumn{2}{l}{PUT /:username/jobs} \\
@@ -243,7 +245,7 @@ We provide a REST API for the developer to use. The reason behind this design de
     Action: GetJob & \multicolumn{2}{l}{GET /:username/home/jobs/:jobId} \\
     Action: GetJobOutput & \multicolumn{2}{l}{GET /:username/jobs-reports/:jobId} \\
     \hline \\
-    \multicolumn{3}{p{12cm}}{\textbf{Note:} Create Job, several arguments are passed, most importantly, an array named ``phases'' that includes the orders with assets necessary in order to execute the job(e.g. `grep -ci' or if its a new asset, it should be a JS object with a closure.)} \\
+    \multicolumn{3}{p{15cm}}{\textbf{Note:} Create Job, several arguments are passed, most importantly, an array named ``phases'' that includes the orders with assets necessary in order to execute the job(e.g. `grep -ci' or if its a new asset, it should be a JS object with a closure.)} \\
     \hline 
   \end{tabular}
   \caption{browserCloud.js REST API Draft}
