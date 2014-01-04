@@ -6,55 +6,65 @@
 
 \section{Evaluation}
 
-The proposed system will be evaluated with the goal of comparing to existing centralized non P2P cloud, P2P distributed job computing and storage. The desired output of this analysis will be to produce a quantifiable and comparable metrics to other systems, taking into account its scalability, resilience, availability, processing power and latency. In the end, we expect to have an ``type of application/solution'', mentioning the advantages present using browserCloud.js in comparison with the other systems, such as table~\ref{tbl:cloudcomparisson}.
+The proposed system will be evaluated with the goal of comparing to existing centralized non P2P cloud and P2P distributed voluntary job computing and storage. The desired outcome of this analysis will be to produce a quantifiable set of comparable metrics to other systems, taking into account issues such as: scalability, resilience, availability, processing power and latency. In the end, we expect to have an assessment, ``a new type of application/solution'', mentioning the advantages present using browserCloud.js in comparison with the other systems, presented in table~\ref{tbl:cloudcomparisson}.
 
 
-\subsection{Evaluation of the data consistency, availability and partition tolerance}
+\subsection{Qualitative Evaluation of data consistency, availability and partition tolerance}
 
-In browserCloud.js files are immutable, any operation that involves data manipulation will create a new file with the changes, this means that once the file is ready to be read, its by default, the most current version, any the transactional logic of writing(PUT) and deleting(DELETE) files is kept on the application using browserCloud.js. 
+In browserCloud.js files are immutable, any operation that involves data manipulation will create a new file with the changes. This means that once the file is ready to be read, it is by default, the most current version. Any transactional semantics of writing(PUT) and deleting(DELETE) files are maintained on the application, developed by a user, using browserCloud.js platform. 
 
-In this evaluation, our target is to test how the system behaves in different conditions, in order to assess the data consistency strategies possible (Eventual Consistency, Monotonic Read Consistency, Immediate Consistency, etc).
+In this evaluation, our target is to test how the system behaves in different conditions, in order to assess the data consistency semantics possible (Eventual Consistency, Monotonic Read Consistency, Immediate Consistency, etc).
 
-Other point that we want to evaluate is how tolerant is browserCloud.js for data partition, taking into account we are limited by the available storage that the browser enables and of course, the need to have smaller chunks to be quickly transfered when Churn Rate is high.
+Another point that we want to evaluate how tolerant is browserCloud.js is for data partition, taking into account we are limited by the available storage that the browser enables and of course, the need to have smaller chunks to be quickly transfered when churn rate is high.
 
-This tests will be executed in two different stages, the first one, ``in lab'', will be a controlled P2P environment, where different browsers and computers will be used for tests, in order to evaluate and calculate the factors that are used to calculate values such as: reputation, threshold to ascend one Node and block size. 
+These tests will be executed in two different stages: the first one, ``in lab'', will be a controlled P2P environment, where different browsers and computers will be used for tests, in order to evaluate and calculate the factors that are used to calculate values such as: reputation, threshold to ascend one Node, and block size. 
 
 After realizing how the system can perform best, a ``field'' trial will be executed, this will be executed by approaching volunteers that might want to contribute to the experiment, loading the code into their browser so real world tests can be performed.
 
+\subsection{Quantitative Evaluation of system performance when executing jobs and storing/fetching data}
 
-\subsection{Evaluation of latency when executing a job and storing/fetching data}
+One of the key factors for an App ready cloud platform is its latency; storing and fetching data has to be rapid enough that it does not limit the performance of the applications using browserCloud.js. The system performance varies depending on its usage; in order to evaluate it correctly, tests will be performed, changing several factors that will impact latency:
 
-One of the key factors for an App ready cloud platform is its latency, storing and fetching data has to be rapid enough that it doesn't limits the performance of the applications using browserCloud.js. Latency varies depending on the system usage, in order to evaluate it correctly, tests will be performed, changing several factors that will impact latency:
-
+\textbf{System evaluation parameters}
 \begin{itemize}
-  \item Churn Rate - Varying the churn rate will create instability the computing power of the platform, creating scenarios where job tasks have to be resent to another node to be completed, adding delay to the estimated time of the job. We can also loose the point of contact to the network, which makes us the need to reconnect again, adding more time for any request.
-  \item Number of nodes - The greater the network, the more distributed is the load, which means faster request handling by the node, however, as it grows, the number of messages traded between the node grows and these have impact as well. 
-  \item Number of parallel connections performing requests - With this variance, we want to make sure how much traffic and load the system is able to cope
-  \item Number of requests - This is related with the number of parallel connections, however, more focused on number per application
-  \item Number of jobs running - Jobs manipulate data ans consume the processing power of the system, which also influences latency
+  \item Churn Rate - Varying the churn rate will create instability in the overall computing power of the platform, creating scenarios where job tasks have to be resent to another node to be completed, adding delay to the estimated time of the job. We can also loose the point of contact to the network, which makes us need to reconnect again, adding more time for any request.
+  \item Number of nodes - The greater the network, the more distributed is the load, which means faster request handling by the node; however, as it grows, the number of messages traded between the nodes grows and these have impact as well. 
+  \item Number of parallel connections performing requests - With this variance, we want to make sure how much traffic and load the system is able to cope.
+  \item Number of requests - This is related with the number of parallel connections, however, more focused on number per application using browserCloud.js API.
+  \item Number of jobs running - Jobs manipulate data and consume the processing power of the system, which also influences latency.
   \item Different volumes of file storage - Different types of data have different needs, serving big volumes of data is an harder task because it must be served by several nodes
 \end{itemize}
 
-The test will be executed in two different phases: 1) the first in a controlled environment, being able to modify the churn rate on demand and evaluation its behavior, these tests will be essential to evaluate and tune browserCloud.js to the 2) real world tests, using pure voluntary browsers, which are a non controlled environment. These tests will permit us to assess quantifiable results to be compared with other cloud like platforms.
+The tuning of this system evaluation parameters will enable us to asses how this system behaves, using the following metrics of evaluation, comparable to other Cloud systems:
 
-\subsection{Envisioned final analysis}
+\textbf{System performance metrics}
+\begin{itemize}
+  \item Resource utilization - How much is possible to utilize from the available resources using this approach.
+  \item Load Balancing - If the load is well distributed between all the nodes or if it is imbalanced.
+  \item Cost - What is the cost associated with the set up of browserCloud.js and what are the costs of using it.
+  \item Execution speed - Time necessary to perform a job with different levels of complexity.
+\end{itemize}
 
-Once the evaluation of each component its done, we envisioned a one by one comparison between the most used or known system for distributed computing jobs and storage, point which excels the best for the type of task with the respective trade offs. In table~\ref{tbl:cloudcomparisson}, we can an example
+The tests will be executed in two different phases: 1) the first in a controlled environment, being able to modify the churn rate on demand and evaluation its behavior, these tests will be essential to evaluate and tune browserCloud.js to the 2) real world tests, using pure voluntary browsers, which are a non controlled environment. These tests will permit us to assess quantifiable results to be compared with other cloud like platforms.
+
+\subsection{Envisioned final comparative analysis}
+
+Once the evaluation of each component its done, we envisioned a one by one comparison between browserCloud.js and some of the most used, or known systems for distributed computing jobs and storage, pinpoint which excels the best for each type of task with the respective trade offs, classifying with a numeric value in the range [-1,1] for each of the respective dimensions of comparison: \textbf{Q - Quality of results}, \textbf{P - Performance} , \textbf{C - Cost}. In Table~\ref{tbl:cloudcomparisson}, we can see an example.
 
 \begin{table}
-  \begin{tabular}{| c | c | c | c | c |}
+  \begin{tabular}{| c | c | c | c | c | c | }
   \hline
-  Type of Task & AWS & SETI@Home & browserCloud.js & community-lab \\
+  Type of Task & AWS & SETI@Home & community-lab & browserCloud.js & Obs. \\
   \hline
-  Genome Sequencing & & & & \\ 
+  Genome Sequencing & [Q,P,C] & [Q,P,C] & [Q,P,C] & [Q,P,C] & ... \\ 
   \hline
-  Photo Storage & & & & \\
+  Photo Storage & [Q,P,C] & [Q,P,C] & [Q,P,C] & [Q,P,C] & ... \\
   \hline  
-  Realtime Application & & & & \\
+  Realtime Application & [Q,P,C] & [Q,P,C] & [Q,P,C] & [Q,P,C] & ... \\
   \hline
-  ... & & & & \\
+  ...  & ... & ... & ... & ... & ... \\
   \hline
   \end{tabular}
-  \caption{Possible table of comparison for browserCloud.js against other computing and storage distributed platforms cloud like}
+  \caption{Outline for summary comparison table of browserCloud.js against other Cloud and distributed computing platforms.}
   \label{tbl:cloudcomparisson}
 \end{table}

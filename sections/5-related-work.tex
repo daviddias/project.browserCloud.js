@@ -18,15 +18,17 @@ Cloud Computing is a term used to describe a large number of computers, connecte
 \begin{table}
   \begin{tabular}{| c | c | c |}
   \hline 
-  Acronym & Full Name & Description \\
-  IaaS & & \\
-  PaaS & & \\
-  SaaS & & \\
-  NaaS & & \\
-  MaaS & & \\
+  Acronym & Full Name  \\
+  IaaS & Infrastructure as a Service \\
+  PaaS & Platform as a Service \\
+  SaaS & Software as a Service \\
+  NaaS & Network as a Service \\
+  MaaS & Metal as a Service \\
+  MDBaaS & MongoDB as a Service \\
+  ... & ... \\
   \hline   
   \end{tabular}
-  \caption{The different types of Cloud Computing services being offered}
+  \caption{Some of the different types of Cloud Computing services being offered}
   \label{tbl:aastypes}
 \end{table}
 
@@ -141,7 +143,7 @@ A community cloud is a network of large scale, self-organized and essentially de
 
 One major trend in Community Cloud computing is not only to share and trade computing resources, but also to build the actual physical network in which they are shared, this is known as Community Networks or ``bottom-up networking''. Community Networks such as guifi.net and Athens Wireless Metropolitan Network (AWMN) have together more than 22500 nodes providing localized free access to content, without the need to contract from an Internet provider.
 
-CONFINE\cite{Navarro} is an European effort that has the goal to federate existing community networks, creating an experimental testbed for research on community owned local IP networks. From this project, resulted Community-Lab,\footnote{LINK TO COMMUNITY-LAB} a federation between guifi.net, AWMN and FunkFeuer (community network from Vienna and Graz, Austria), with the goal of carrying out experimentally-driven research on community-owned open networks.
+CONFINE\cite{Navarro} is an European effort that has the goal to federate existing community networks, creating an experimental testbed for research on community owned local IP networks. From this project, resulted Community-Lab,\footnote{http://community-lab.org/} a federation between guifi.net, AWMN and FunkFeuer (community network from Vienna and Graz, Austria), with the goal of carrying out experimentally-driven research on community-owned open networks.
 
 
 % ``Scalable, self-organized and decentralized IP networks and services built and operated by citizens for citizens'' Navarro
@@ -150,7 +152,7 @@ CONFINE\cite{Navarro} is an European effort that has the goal to federate existi
 
 When we talk about peer-to-peer applications, most people will remember volunteered storage sharing, as it most widely known for its ability to distribute content, thanks to the illegal distribution of copyrighted software and media. However if we take a look at the whole spectrum of volunteer resource systems, we will see that are two categories, one for content sharing and the second one for cycle sharing, the second is known today as Public Computing.
 
-Storage and content sharing systems are the popular type from the two categories of peer-to-peer systems, specially because their ability to distribute content without legal control, which after their success, systems like Napster\footnote{napster link} were legally forced to shutdown. One of the key benefits of using a peer-to-peer storage sharing system is their ability to optimize the usage of each individual user limited bandwidth, enabling file partitioned transfers from multiple users, using the hash of each partition or chunk to prove its integrity. Each file availability grows organically with the interested in that file, because more copies will exist in the network. Other examples of this type of system are: KaZaA\footnote{kazaa link}, BitTorrent\footnote{bit torrent link} and Freenet\cite{Clarke2001}.
+Storage and content sharing systems are the popular type from the two categories of peer-to-peer systems, specially because their ability to distribute content without legal control, which after their success, systems like Napster\footnote{http://napster.com} were legally forced to shutdown. One of the key benefits of using a peer-to-peer storage sharing system is their ability to optimize the usage of each individual user limited bandwidth, enabling file partitioned transfers from multiple users, using the hash of each partition or chunk to prove its integrity. Each file availability grows organically with the interested in that file, because more copies will exist in the network. Other examples of this type of system are: KaZaA\footnote{http://www.kazaa.com/}, BitTorrent\footnote{http://www.bittorrent.com/} and Freenet\cite{Clarke2001}.
 
 The second category is that of systems that fit into the domain of of Public Computing, where users share their idle computer cycles; this can be done by starting or resuming a computing process when the user is not performing any task that is relevant for him/her, or by establishing the tasks as low priority processes, so it does not affect the user experience. One way of doing this is using a screen saver, so the shift to an idle state is obvious to the machine. This systems are possible because we can divide bigger computational jobs into smaller tasks that can run independently and in parallel, again this is known as the ``bag-of-tasks'' model of distributed computing. Several systems using this currently are Folding@Home, Genome@Home\cite{Larson2002} and SETI@Home\cite{Anderson2002}\cite{Korpela2001}.
 
@@ -392,7 +394,4 @@ The first research of browser-based distributed cycle sharing was performed by J
 
 \subsection{Analysis and discussion}
 
- % ISTO É pARA FAZER UM SUM UP
-
- % Doug McIlroy, then head of the Bell Labs CSRC and contributor to Unix pipes,[1] summarised Unix philosophy as follows:[2]
-% This is the Unix philosophy: Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface.
+The related work presented was researched with the goal of deepen the knowledge of current strategies for resource sharing, as we intend present a new one using the Web Platform. However to enable this new Cloud platform on using browsers, it is important to understand how to scale storage and job execution in peer-to-peer networks therefore a study of the current algorithms and its capabilities was needed. Lastly, browsing the web is almost as old as the Internet itself, however on the last few years, we are seeing the Web Platform rapidly changing enabling new possibilities such as peer-to-peer technology such as WebRTC, which otherwise would not be possible to create browserCloud.js.
