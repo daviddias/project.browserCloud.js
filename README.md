@@ -1,6 +1,10 @@
 browserCloud.js
 =======================================
 
+## Badgers
+
+[![](https://cldup.com/pgZbzoshyV-3000x3000.png)](http://www.gsd.inesc-id.pt/)
+
 ## Description
 ￼
 Cloud computing has revolutionized the computing landscape mainly due to key advantages to developers/users over pre-existing computing paradigms: 
